@@ -71,7 +71,7 @@ public class AddUser extends HttpServlet{
       		 r = stmt1.executeQuery("SELECT * FROM market.user WHERE user_phone='"+userPhone+"'");
       		 
 		  	if(r.next()) {
-		  		ret_obj.put("status", "false");
+		  		ret_obj.put("status", false);
 	    		ret_obj.put("message", "该会员电话已存在");
 		  	
 		  	}else {
@@ -81,12 +81,12 @@ public class AddUser extends HttpServlet{
 	          	System.out.println(frontAddUser_insert);
 	       PreparedStatement stmt2 = conn.prepareStatement(frontAddUser_insert);     
 	       insertResult=stmt2.executeUpdate(); 
-	     
+	       
 	       if (insertResult==0) {  	  
-	    		  ret_obj.put("status", "false");
+	    		  ret_obj.put("status", false);
 	    		  ret_obj.put("message", "添加会员失败");
 	    	}else {
-	    	   	ret_obj.put("status", "true");
+	    	   	ret_obj.put("status",true);
 	          } 
 		  	}
 	       }catch (SQLException e) {  	

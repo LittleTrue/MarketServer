@@ -1,4 +1,4 @@
-package front;
+package login;
 
 import java.io.BufferedReader;
 import java.io.IOException;  
@@ -23,55 +23,52 @@ import net.sf.json.JSONObject;
 import net.sf.json.JSONString;
 import net.sf.json.JSONException;
 
-public class GetUser extends HttpServlet{
+public class LoginOut extends HttpServlet{
 	private static Connection conn = null;
 	private ResultSet r;
+	private HashMap<String,String> workerInfo;
 	
 	 protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {  
 		
-		 String type;
-		 String target;//输入
 		 
+		  int updateResult;//方法变量定义
 		 
-		 String userName;
-		 String userId;//输出
+		 String workerId="";//进行操作中的员工session控制
 		 
-		 System.out.println("front被访问了");
+		 try {
+			workerInfo=login.Login.getWorkerInfoFromToken(req);
+			} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		  
+		 System.out.println("loginout被访问了");
 		 
 		 req.setCharacterEncoding("utf-8");
 		 resp.setCharacterEncoding("utf-8"); 
-
-		 type = req.getParameter("type");////key -value get方式获取url的键值对 
-		 target = req.getParameter("target");
 		 
-		 System.out.println(target);
+		 workerId=workerInfo.get("workerId");
+	
+		PrintWriter out=resp.getWriter();;//输出流获取
 		  
-		 PrintWriter out=resp.getWriter();   //输出流获取
-		  
+	
+		
 		 JSONObject ret_obj = new JSONObject();
 		 
 	      conn=login.Login.getCon();
 	      
+	      System.out.println(workerId);
 	       try {    
-	       String frontGetUser_require = "select user_name,user_id from user"
-	          		+ " where user_phone ='"+target+"' or user_id="+target;
-	       
-	       System.out.println(frontGetUser_require);
-
-	       PreparedStatement stmt = conn.prepareStatement(frontGetUser_require);     
-	       r= stmt.executeQuery(); 
+	       String loginLoginOut_update = "UPDATE market.worker SET worker_token = null"
+	          		+ " where worker_id ="+workerId;
+	       PreparedStatement stmt = conn.prepareStatement(loginLoginOut_update);     
+	       updateResult= stmt.executeUpdate(); 
 	     
-	       if (!r.next()) {  	  
+	       if ( updateResult==0) {  	  
 	    		  ret_obj.put("status", false);
-	    		  ret_obj.put("message", "获取员工失败");
+	    		  ret_obj.put("message", "退出失败");
 	    	}else {
-	    		userName=r.getString(1);
-	    		userId=r.getString(2);;
 	    	   	ret_obj.put("status",true);
-	    		ret_obj.put("name",userName);  
-	    		ret_obj.put("userId",userId);
-	          } 
-	       stmt.close();
+	          }  
 	       }catch (SQLException e) {  	
 	        	  e.printStackTrace();
   
@@ -82,7 +79,8 @@ public class GetUser extends HttpServlet{
 	                   e.printStackTrace();
 	              }
 	          }
-
+	          
+	         
 	        out.print(ret_obj.toString());  
 	        out.flush();  
 	       
@@ -92,4 +90,5 @@ public class GetUser extends HttpServlet{
 	    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {  
 	        this.doGet(req, resp);  
 	    }  
+
 }

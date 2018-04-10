@@ -38,6 +38,6 @@ public class Constant {
 	 */
 	public static final String JWT_ID = "5236A";										//jwtid
 	public static final String JWT_SECERT = "7786df7fc3a34e26a61c034d5ec8245d";			//密匙
-	public static final long JWT_TTL = 1 * 5000 * 1000;									//token有效时间
+	public static final long JWT_TTL = 10 * 5000 * 1000;									//token有效时间
 	
 }

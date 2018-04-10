@@ -39,7 +39,7 @@ public class AddGoodsInfo extends HttpServlet{
 		 String goodName;
 		 String supplier;
 		 String warmNum;//输入
-		 
+		 String good;
 		 
 		 System.out.println("front被访问了");
 		 
@@ -54,6 +54,10 @@ public class AddGoodsInfo extends HttpServlet{
 		 System.out.println(input);
 	
 		 JSONObject get_obj=JSONObject.fromString(input);
+		 good=get_obj.getString("good");
+		 
+		  get_obj=JSONObject.fromString(good);
+		 
 		 
 		 goodDescribe=get_obj.getString("goodDescribe");
 		 goodAttr=get_obj.getString("goodAttr");
@@ -80,7 +84,7 @@ public class AddGoodsInfo extends HttpServlet{
 	       r= stmt1.executeQuery(); 
 	     
 	       if (r.next()) {  	  
-	    		  ret_obj.put("status", "false");
+	    		  ret_obj.put("status", false);
 	    		  ret_obj.put("message", "商品已存在");
 	    	}else {	
 	    		String stockAddGoodsInfo_insert = "insert into market.goods(good_name,good_attr,good_divide,good_supplier,warn_stock,good_describe,instock_price)"
@@ -89,10 +93,10 @@ public class AddGoodsInfo extends HttpServlet{
 	    		PreparedStatement stmt2 = conn.prepareStatement(stockAddGoodsInfo_insert);     
 	    		insertResult= stmt2.executeUpdate(); 
 	    		 if (insertResult==0) {  	  
-		    		  ret_obj.put("status", "false");
+		    		  ret_obj.put("status", false);
 		    		  ret_obj.put("message", "添加商品失败");
 		    	}else {
-		    	   	ret_obj.put("status", "true");
+		    	   	ret_obj.put("status",true);
 		          } 
 	    	} 
 	       }catch (SQLException e) {  	

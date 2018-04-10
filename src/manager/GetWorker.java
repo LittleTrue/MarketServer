@@ -73,14 +73,14 @@ public class GetWorker extends HttpServlet  {
 	        	r.beforeFirst();// 返回第一个（记住不是rs.frist()）,不写的话下面的循环里面没值  
 	        	
 	        	if(!r.next()) {
-	        		ret_obj.put("status","false");
+	        		ret_obj.put("status",false);
 	        		ret_obj.put("message","当前没有员工账号");
 	        	}
 	        	else {
 	        		r.last();// 移动到最后  	    		
 		    		total=r.getRow();// 获得结果集长度  
 		    		
-	        		ret_obj.put("status","true");
+	        		ret_obj.put("status",true);
 	        		ret_obj.put("info",ret_obj_array);
 	        		ret_obj.put("total",total);
 	        	}

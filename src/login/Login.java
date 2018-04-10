@@ -28,8 +28,6 @@ import com.paul.sertest.TokenMgr;
 import com.paul.sertest.config.Constant;
 import com.paul.sertest.model.SubjectModel;
 
-
-
 public class Login extends HttpServlet{
 	private static Connection conn = null;
 	private ResultSet r;
@@ -62,22 +60,24 @@ public class Login extends HttpServlet{
 //json	 
 		 input=getRequestBody(req);
 		
-				 
 		 PrintWriter out = new PrintWriter(resp.getOutputStream());
   
 		 System.out.println(input);
 	
-		 JSONObject get_obj=JSONObject.fromString(input);
-		 admin=get_obj.getString("username");
-		 password=get_obj.getString("password");
+	
 		 
+		 System.out.println("");
 //json
+		 JSONObject get_obj=JSONObject.fromString(input);
 		 
 		 JSONObject ret_obj = new JSONObject();
 		 
 
 	      conn=getCon();
-
+	    
+	
+		 admin=get_obj.getString("username");
+		 password=get_obj.getString("password");
 	       try {    
 	       String adminLogin_require = "select worker_id,worker_position,worker_name from worker"
 	          		+ " where worker_account ='"+admin+"' AND worker_password ='"+ password+"'";
@@ -85,7 +85,7 @@ public class Login extends HttpServlet{
 	       
 	       r=stmt1.executeQuery();   
 	       if (!r.next()) {  	  
-	    		  ret_obj.put("status", "false");
+	    		  ret_obj.put("status", false);
 	    		  ret_obj.put("message", "账号或密码错误");
 	    	}else {
 	    		autoIncKey=r.getInt(1);//取得ID	
@@ -104,10 +104,10 @@ public class Login extends HttpServlet{
 		       updateResult=stmt2.executeUpdate();  
 		       
 		       if (updateResult==0) {  	  
-		    		  ret_obj.put("status", "false");
+		    		  ret_obj.put("status", false);
 		    		  ret_obj.put("message", "更新token失败,请重新登录");
 		    	}else {
-		    		ret_obj.put("status", "true");
+		    		ret_obj.put("status", true);
 					ret_obj.put("token",token);
 					
 					
@@ -142,7 +142,7 @@ public class Login extends HttpServlet{
 	 public static Connection getCon() {
          try {
              Class.forName("com.mysql.jdbc.Driver"); 
-             String url = "jdbc:mysql://47.106.107.239:3306/market?useUnicode=true&characterEncoding=utf8";       
+             String url = "jdbc:mysql://47.106.107.239:3306/market?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true";       
             conn = DriverManager.getConnection(url,"root","1120433guo*GUO");  
          	} catch (Exception e) {
              System.out.println("连接失败");

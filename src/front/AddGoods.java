@@ -60,7 +60,7 @@ public class AddGoods extends HttpServlet {
 	       r= stmt.executeQuery(); 
 	     
 	       if (!r.next()) {  	  
-	    		  ret_obj.put("status", "false");
+	    		  ret_obj.put("status", false);
 	    		  ret_obj.put("message", "添加商品失败");
 	    	}else {
 	    		good_price=r.getString(1);
@@ -69,7 +69,7 @@ public class AddGoods extends HttpServlet {
 	    		if(activity_price!=null) {
 	    			good_price=activity_price;
 	    		}
-	    	   	ret_obj.put("status", "true");
+	    	   	ret_obj.put("status",true);
 	    		ret_obj.put("good_price",good_price);  
 	          }
 	       

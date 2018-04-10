@@ -72,7 +72,7 @@ public class AddWorker extends HttpServlet {
 	        	//执行数据库查询语句
 	        	ResultSet rs = stmt.executeQuery("SELECT * FROM worker WHERE worker_phone='"+tel+"'");
 	        	if(rs.next()) {
-	        		ret_obj.put("status", "false");
+	        		ret_obj.put("status", false);
 	        		ret_obj.put("message", "员工电话已存在");
 	        	}
 	        	else {
@@ -80,10 +80,10 @@ public class AddWorker extends HttpServlet {
 	        		insertResult=stmt.executeUpdate(sql);
 	            	
 	        		if(insertResult==0) {
-	        			ret_obj.put("status", "false");
+	        			ret_obj.put("status", false);
 		        		ret_obj.put("message", "员工添加失败");
 	        		}else {
-	        			ret_obj.put("status", "true");
+	        			ret_obj.put("status",true);
 	        		}
 	        	}
 	        } catch (SQLException e) {

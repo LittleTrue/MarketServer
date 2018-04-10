@@ -1,5 +1,4 @@
-package front;
-
+package stock;
 import java.io.BufferedReader;
 import java.io.IOException;  
 import java.io.PrintWriter;
@@ -21,60 +20,59 @@ import com.sun.javafx.collections.MappingChange.Map;
 
 import net.sf.json.JSONObject;
 import net.sf.json.JSONString;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONException;
-
-public class GetUser extends HttpServlet{
+public class GetGoodsType extends HttpServlet {
 	private static Connection conn = null;
 	private ResultSet r;
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException { 
+		 //方法变量定义
+
 	
-	 protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {  
+		 
 		
-		 String type;
-		 String target;//输入
+		 int total;//输出
 		 
+		 conn=login.Login.getCon();
 		 
-		 String userName;
-		 String userId;//输出
-		 
-		 System.out.println("front被访问了");
+		 System.out.println("stock3被访问了");
 		 
 		 req.setCharacterEncoding("utf-8");
 		 resp.setCharacterEncoding("utf-8"); 
 
-		 type = req.getParameter("type");////key -value get方式获取url的键值对 
-		 target = req.getParameter("target");
-		 
-		 System.out.println(target);
-		  
-		 PrintWriter out=resp.getWriter();   //输出流获取
-		  
+		PrintWriter out=resp.getWriter();;//输出流获取
+		
 		 JSONObject ret_obj = new JSONObject();
-		 
-	      conn=login.Login.getCon();
-	      
+		 JSONArray ret_obj_array = new JSONArray();
+ 
 	       try {    
-	       String frontGetUser_require = "select user_name,user_id from user"
-	          		+ " where user_phone ='"+target+"' or user_id="+target;
-	       
-	       System.out.println(frontGetUser_require);
-
-	       PreparedStatement stmt = conn.prepareStatement(frontGetUser_require);     
+	       String stockGetGoodsType_require = "select distinct good_divide from goods";
+	          		
+	       PreparedStatement stmt = conn.prepareStatement(stockGetGoodsType_require);     
 	       r= stmt.executeQuery(); 
 	     
+	       	r= stmt.executeQuery(); 
+	       
+	       ret_obj_array =login.Login.resultSetToJsonArry(r);
+       	
+	       r.beforeFirst();// 返回第一个（记住不是rs.frist()）,不写的话下面的循环里面没值 
+	       
 	       if (!r.next()) {  	  
 	    		  ret_obj.put("status", false);
-	    		  ret_obj.put("message", "获取员工失败");
+	    		  ret_obj.put("message", "获取种类失败");
 	    	}else {
-	    		userName=r.getString(1);
-	    		userId=r.getString(2);;
-	    	   	ret_obj.put("status",true);
-	    		ret_obj.put("name",userName);  
-	    		ret_obj.put("userId",userId);
-	          } 
+	    		r.last();// 移动到最后  	    		
+	    		total=r.getRow();// 获得结果集长度  
+	    		
+        		ret_obj.put("status",true);
+        		ret_obj.put("info",ret_obj_array);
+        		ret_obj.put("total",total);
+	          }
+	       
 	       stmt.close();
 	       }catch (SQLException e) {  	
 	        	  e.printStackTrace();
-  
+ 
 	          } finally { 
 	               try {
 	                   conn.close(); 
@@ -82,12 +80,11 @@ public class GetUser extends HttpServlet{
 	                   e.printStackTrace();
 	              }
 	          }
-
+	         
 	        out.print(ret_obj.toString());  
 	        out.flush();  
 	       
 	    }  
-	 
 	 @Override  
 	    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {  
 	        this.doGet(req, resp);  

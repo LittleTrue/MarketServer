@@ -54,7 +54,7 @@ public class Islogin  extends HttpServlet{
 			 JSONObject ret_obj = new JSONObject();
 			
 		
-		     ret_obj.put("status", "true");
+		     ret_obj.put("status",true);
 		     ret_obj.put("role", workerInfo.get("workerPosition"));
 		     ret_obj.put("name", workerInfo.get("workerName"));
 		       

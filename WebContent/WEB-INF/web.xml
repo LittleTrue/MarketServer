@@ -14,6 +14,16 @@ id="WebApp_ID" version="3.0">
       <url-pattern>/login/login</url-pattern>   
   </servlet-mapping> 
   
+   <servlet>  
+      <servlet-name>loginLoginOut</servlet-name>  
+      <servlet-class>login.LoginOut</servlet-class> 
+  </servlet> 
+  
+  <servlet-mapping>  
+   <servlet-name>loginLoginOut</servlet-name>  
+   <url-pattern>/login/logout</url-pattern> 
+   </servlet-mapping> 
+   
     <filter>
         <filter-name>CorsFilter</filter-name>
         <filter-class>com.paul.sertest.filter.CorsFilter</filter-class>
@@ -22,6 +32,7 @@ id="WebApp_ID" version="3.0">
         <filter-name>CorsFilter</filter-name>
         <url-pattern>/admin/*</url-pattern>
          <url-pattern>/front/*</url-pattern>
+         <url-pattern>/login/logout</url-pattern>
            <url-pattern>/user/info</url-pattern>
     </filter-mapping>
 
@@ -85,6 +96,17 @@ id="WebApp_ID" version="3.0">
    <servlet-name>stockAddGoodsInfo</servlet-name>  
    <url-pattern>/admin/good/info</url-pattern> 
    </servlet-mapping> 
+   
+    <servlet>  
+      <servlet-name>stockGetGoodsType</servlet-name>  
+      <servlet-class>stock.GetGoodsType</servlet-class>  
+  </servlet> 
+  
+  <servlet-mapping>  
+   <servlet-name>stockGetGoodsType</servlet-name>  
+   <url-pattern>/admin/stock/type</url-pattern> 
+   </servlet-mapping> 
+   
    
    <servlet>  
       <servlet-name>managerGetWorker</servlet-name>  
@@ -150,15 +172,42 @@ id="WebApp_ID" version="3.0">
    <servlet-name>stockGetPurchaseListDetail</servlet-name>  
    <url-pattern>/admin/purchase/detail</url-pattern> 
    </servlet-mapping> 
+   
    <servlet>  
       <servlet-name>managerDeleteWorker</servlet-name>  
-      <servlet-class>manager.DeleteWorker</servlet-class>  
+      <servlet-class>manager.DeleteWorker</servlet-class> 
+      <init-param> <param-name>readonly</param-name> 
+      <param-value>false</param-value> </init-param>   
   </servlet> 
   <servlet-mapping>  
    <servlet-name>managerDeleteWorker</servlet-name>  
    <url-pattern>/admin/account/delete</url-pattern> 
    </servlet-mapping> 
+   
+     <servlet>  
+      <servlet-name>managerModifyWorker</servlet-name>  
+      <servlet-class>manager.ModifyWorker</servlet-class> 
+      <init-param> <param-name>readonly</param-name> 
+      <param-value>false</param-value> </init-param>   
+  </servlet> 
+  <servlet-mapping>  
+   <servlet-name>managerModifyWorker</servlet-name>  
+   <url-pattern>/admin/account/edit</url-pattern> 
+   </servlet-mapping> 
   
+  <servlet>  
+      <servlet-name>stockFinishPurchase</servlet-name>  
+      <servlet-class>stock.FinishPurchase</servlet-class> 
+  </servlet> 
+  
+  <servlet-mapping>  
+   <servlet-name>stockFinishPurchase</servlet-name>  
+   <url-pattern>/admin/purchase/storage</url-pattern> 
+   </servlet-mapping> 
+   
+  
+   
+   
 </web-app> 
  
   

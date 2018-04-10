@@ -55,10 +55,10 @@ public class DeleteWorker extends HttpServlet{
   
    	
    	if(deleteResult==0) {  
-		  ret_obj.put("status", "false");
+		  ret_obj.put("status", false);
 		  ret_obj.put("message", "删除员工失败");
 	}else {
-	   	ret_obj.put("status", "true");
+	   	ret_obj.put("status",true);
      } 
        stmt.close();
        
@@ -82,4 +82,12 @@ public class DeleteWorker extends HttpServlet{
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {  
         this.doGet(req, resp);  
     }  
+ @Override  
+ protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {  
+     this.doGet(req, resp);  
+ } 
+ @Override  
+ protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {  
+     this.doGet(req, resp);  
+ } 
 }

@@ -35,7 +35,7 @@ public class AddPurchase extends HttpServlet{
 		 PreparedStatement stmt1;
 		 PreparedStatement stmt2; 
 		 String goodName;
-		 int time=( int) System.currentTimeMillis();
+		 long time=System.currentTimeMillis();
 		 
 		 int autoIncKey=0;
 		 int insertResult;//方法变量定义
@@ -81,7 +81,7 @@ public class AddPurchase extends HttpServlet{
 				       r1= stmt1.executeQuery(); 
 				      
 				       if (!r1.next()) {  	  
-				    		  ret_obj.put("status", "false");
+				    		  ret_obj.put("status", false);
 				    		  ret_obj.put("message", "商品"+value.getString("goodNo")+"不存在或信息出错");
 				    		  break;  
 				    	}else {
@@ -100,7 +100,7 @@ public class AddPurchase extends HttpServlet{
 					       r2=stmt2.getGeneratedKeys();
 					       
 					       if (!r2.next()){  	  
-					    		  ret_obj.put("status", "false");
+					    		  ret_obj.put("status", false);
 					    		  ret_obj.put("message", "插入采购表失败");
 					    		  break;	  
 					    	}else {
@@ -115,7 +115,7 @@ public class AddPurchase extends HttpServlet{
 						       
 						       insertResult=stmt2.executeUpdate(); 
 						       if (insertResult == 0) {
-						    	   ret_obj.put("status", "false");
+						    	   ret_obj.put("status", false);
 						    	   ret_obj.put("message", "插入采购表失败");
 						    	   break;  
 						          }
@@ -128,7 +128,7 @@ public class AddPurchase extends HttpServlet{
 				          } 
 		        }//for
 	          if(ret_obj.length()!=0) {
-	        		ret_obj.put("status", "true");
+	        		ret_obj.put("status",true);
 	          }
 
 	        out.print(ret_obj.toString());  
