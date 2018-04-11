@@ -75,14 +75,14 @@ public class AddPurchase extends HttpServlet{
 				value=(JSONObject) get_obj_array.get(i); 
 				try {    
 				       String managerAddPurchase_require = "select good_name from goods"
-				          		+ " where good_id ='"+value.getString("goodNo")+"'";
+				          		+ " where good_id ='"+value.getString("goodId")+"'";
 				       
 				       stmt1 = conn.prepareStatement(managerAddPurchase_require);     
 				       r1= stmt1.executeQuery(); 
 				      
 				       if (!r1.next()) {  	  
 				    		  ret_obj.put("status", false);
-				    		  ret_obj.put("message", "商品"+value.getString("goodNo")+"不存在或信息出错");
+				    		  ret_obj.put("message", "商品"+value.getString("goodId")+"不存在或信息出错");
 				    		  break;  
 				    	}else {
 				    		goodName=r1.getString(1);
@@ -90,7 +90,7 @@ public class AddPurchase extends HttpServlet{
 				    		if(autoIncKey==0) {
 				    			
 				    		String managerAddPurchase_insert = "insert into purchase(good_id,good_name,purchase_number,purchase_note,purchase_status,importance,create_time)"
-					          		+ "values ('"+value.getInt("goodNo")+"','"+goodName+"','"+value.getInt("purchaseNum")+"','"+note+"','"+0+"','"+importance+"','"+time+"')";
+					          		+ "values ('"+value.getInt("goodId")+"','"+goodName+"','"+value.getInt("purchaseNum")+"','"+note+"','"+0+"','"+importance+"','"+time+"')";
 				    	
 				    		
 					       stmt2 = (PreparedStatement)conn.prepareStatement(managerAddPurchase_insert,Statement.RETURN_GENERATED_KEYS);   
@@ -109,7 +109,7 @@ public class AddPurchase extends HttpServlet{
 					    	}
 					       }else {
 					    	   String managerAddPurchase_insert = "insert into purchase(purchase_id,good_id,good_name,purchase_number,purchase_note,purchase_status,importance,create_time)"
-						          		+ "values ('"+autoIncKey+"','"+value.getInt("goodNo")+"','"+goodName+"','"+value.getInt("purchaseNum")+"','"+note+"','"+0+"','"+importance+"','"+time+"')";
+						          		+ "values ('"+autoIncKey+"','"+value.getInt("goodId")+"','"+goodName+"','"+value.getInt("purchaseNum")+"','"+note+"','"+0+"','"+importance+"','"+time+"')";
 					    	
 						        stmt2 = conn.prepareStatement(managerAddPurchase_insert);   
 						       

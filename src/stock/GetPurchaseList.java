@@ -33,7 +33,8 @@ public class GetPurchaseList extends HttpServlet{
 
 		 int page;//输入
 		 int size;
-		 
+		 String type;
+		 String stockGetPurchaseList_require="";
 		 
 		 conn=login.Login.getCon();
 		 
@@ -44,6 +45,7 @@ public class GetPurchaseList extends HttpServlet{
 	
 		 page = Integer.parseInt(req.getParameter("page"));////key -value get方式获取url的键值对 
 		 size = Integer.parseInt(req.getParameter("size"));
+		 type = req.getParameter("type");
 		  
 		  depage=login.Login.getSplitPageInfo(page,size);
 		  
@@ -51,11 +53,23 @@ public class GetPurchaseList extends HttpServlet{
 		
 		 JSONObject ret_obj = new JSONObject();
 		 JSONArray ret_obj_array = new JSONArray();
-  
-	       try {    
-	       String stockGetPurchaseList_require = "select distinct purchase_id,purchase_status,create_time,importance from purchase"
-	       +" ORDER BY create_time DESC"+" LIMIT "+depage[0]+","+depage[1];
-	       
+		 
+		 try { 
+			 System.out.println(type);
+			 switch(type){
+			 case "all" : stockGetPurchaseList_require ="select distinct purchase_id,purchase_status,create_time,importance from purchase"
+				       +" ORDER BY create_time DESC"+" LIMIT "+depage[0]+","+depage[1];
+			 			break;
+				 
+			 case "done" : stockGetPurchaseList_require ="select distinct purchase_id,purchase_status,create_time,importance from purchase"
+				       +" WHERE purchase_status = 1"+" ORDER BY create_time DESC"+" LIMIT "+depage[0]+","+depage[1];
+			 			break;
+			 			
+			 case "not" : stockGetPurchaseList_require ="select distinct purchase_id,purchase_status,create_time,importance from purchase"
+				       +" WHERE purchase_status = 0"+" ORDER BY create_time DESC"+" LIMIT "+depage[0]+","+depage[1];
+			 			break;
+			 }
+			 
 	       System.out.println(stockGetPurchaseList_require);
 	       PreparedStatement stmt = conn.prepareStatement(stockGetPurchaseList_require);   
 	       
@@ -66,8 +80,9 @@ public class GetPurchaseList extends HttpServlet{
 	       r.beforeFirst();// 返回第一个（记住不是rs.frist()）,不写的话下面的循环里面没值 
 	       
 	       if (!r.next()) {  	  
-	    		  ret_obj.put("status", false);
-	    		  ret_obj.put("message", "获取列表失败");
+	    	   ret_obj.put("status",true);
+       			ret_obj.put("info","");
+       			ret_obj.put("total",0);
 	    	}else {
 	    		r.last();// 移动到最后  	    		
 	    		total=r.getRow();// 获得结果集长度  

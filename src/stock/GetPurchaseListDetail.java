@@ -43,7 +43,7 @@ public class GetPurchaseListDetail  extends HttpServlet{
 		 req.setCharacterEncoding("utf-8");
 		 resp.setCharacterEncoding("utf-8"); 
 
-		  purchaseId = req.getParameter("no");////key -value get方式获取url的键值对 
+		  purchaseId = req.getParameter("id");////key -value get方式获取url的键值对 
 		  
 		PrintWriter out=resp.getWriter();//输出流获取
 		

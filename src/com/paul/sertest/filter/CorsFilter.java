@@ -79,27 +79,33 @@ public class CorsFilter implements Filter {
 			
 
 				 String filter_require = "select worker_token from worker"
-			          		+ " where worker_id ='"+get_obj.getString("workerId")+"'";
+			          		+ " where worker_id = "+get_obj.getString("workerId");
 				 
-			     PreparedStatement stmt = conn.prepareStatement(filter_require);     
-
+			     PreparedStatement stmt = conn.prepareStatement(filter_require);  
+			     
 			     r=stmt.executeQuery();  
 			     
-			     if (!r.next()) {  	  
+			     if (!r.next()){ 
+			    	 System.out.println("hehe");
 			        PrintWriter printWriter2 = response.getWriter();
 					printWriter2.print(ResponseMgr.noLogin());
 					printWriter2.flush();
 					printWriter2.close();
 		    	}else {
+
 		    		if(r.getString(1).equals(token)){
 		    			
 		    			System.out.println("token有效");
 		    			
 		    		}else{
+		    			if(request.getRequestURI().equals("/MarketServer/login/logout")){
+		    				System.out.println("登出");
+		    			}else{	
+		    				
 		    			PrintWriter printWriter = response.getWriter();
 						printWriter.print(ResponseMgr.loginExpire());
 						printWriter.flush();
-						printWriter.close();
+						printWriter.close();}
 		    		}
 		          } 
 				

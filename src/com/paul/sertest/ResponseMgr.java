@@ -58,7 +58,7 @@ public class ResponseMgr {
 	 * @return
 	 */
 	public static String noLogin() {
-		CommonResult commonResult = new CommonResult(Constant.RESCODE_NOLOGIN, "用户未登录");
+		CommonResult commonResult = new CommonResult(false,Constant.RESCODE_NOLOGIN, "用户未登录");
 		return commonResult.general();
 	}
 	
@@ -67,7 +67,7 @@ public class ResponseMgr {
 	 * @return
 	 */
 	public static String noExist() {
-		CommonResult commonResult = new CommonResult(Constant.RESCODE_NOEXIST, "结果为空");
+		CommonResult commonResult = new CommonResult(false,Constant.RESCODE_NOEXIST, "结果为空");
 		return commonResult.general();
 	}
 	
@@ -76,7 +76,7 @@ public class ResponseMgr {
 	 * @return
 	 */
 	public static String noAuth() {
-		CommonResult commonResult = new CommonResult(Constant.RESCODE_NOAUTH, "拒绝授权");
+		CommonResult commonResult = new CommonResult(false,Constant.RESCODE_NOAUTH, "拒绝授权");
 		return commonResult.general();
 	}
 	
@@ -85,7 +85,7 @@ public class ResponseMgr {
 	 * @return
 	 */
 	public static String loginExpire() {
-		CommonResult commonResult = new CommonResult(Constant.RESCODE_LOGINEXPIRE, "登录过期");
+		CommonResult commonResult = new CommonResult(false,Constant.RESCODE_LOGINEXPIRE, "登录过期");
 		return commonResult.general();
 	}
 }

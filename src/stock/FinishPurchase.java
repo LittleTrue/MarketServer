@@ -37,7 +37,7 @@ public class FinishPurchase extends HttpServlet{
 		 int insertResult;
 		  int[] updateResult;//方法变量定义
 		  
-		
+		 String list;
 		PreparedStatement stmt2;
 		String stockFinishPurchase_update;
 		
@@ -60,13 +60,16 @@ public class FinishPurchase extends HttpServlet{
 		 resp.setCharacterEncoding("utf-8"); 
 
 
-		 input=login.Login.getRequestBody(req);//输入流获取
+		input=login.Login.getRequestBody(req);//输入流获取
 		PrintWriter out=resp.getWriter();;//输出流获取
-		  
+		
 		 System.out.println(input);
-	
-		 JSONArray get_obj_array=JSONArray.fromObject(input);
 		 
+		 JSONObject get_obj=JSONObject.fromObject(input);
+		 
+		 list=get_obj.getString("list");
+		 
+		 JSONArray get_obj_array=JSONArray.fromObject(list);
 		 
 		 JSONObject ret_obj = new JSONObject();
 		 	try { 
@@ -76,14 +79,14 @@ public class FinishPurchase extends HttpServlet{
 	      for (int i = 0; i < get_obj_array.length(); i++) {
 				value=(JSONObject) get_obj_array.get(i); 
 			  
-				        stockFinishPurchase_update = "update purchase set purchase_status ="+value.getInt("purchaseStatus")
-				          		+ " where purchase_id = "+value.getInt("purchaseId")+" AND good_id="+value.getInt("goodNo");
+				        stockFinishPurchase_update = "update purchase set purchase_status ="+value.getInt("purchase_status")
+				          		+ " where purchase_id = "+value.getInt("purchase_id")+" AND good_id="+value.getInt("good_id");
 //				        stmt1=conn.prepareStatement(stockFinishPurchase_update); 
 				        stmt1.addBatch(stockFinishPurchase_update);
 				  
 				    		if(autoIncKey==0) {
 				    		String stockFinishPurchase_insert = "insert into stock(good_id,instock_number,stock_time,worker_id)"
-					          		+ "values ('"+value.getInt("goodNo")+"','"+value.getInt("purchaseNum")+"','"+System.currentTimeMillis()+"','"+workerInfo.get("workerId")+"')";
+					          		+ "values ('"+value.getInt("good_id")+"','"+value.getInt("purchase_number")+"','"+System.currentTimeMillis()+"','"+workerInfo.get("workerId")+"')";
 				    	System.out.println(stockFinishPurchase_insert);
 					        stmt2 = (PreparedStatement)conn.prepareStatement(stockFinishPurchase_insert,Statement.RETURN_GENERATED_KEYS);   
 
@@ -100,7 +103,7 @@ public class FinishPurchase extends HttpServlet{
 					    	}
 					       }else {
 					    		String stockFinishPurchase_insert = "insert into stock(stock_id,good_id,instock_number,stock_time,worker_id)"
-						          		+ "  values ('"+autoIncKey+"','"+value.getInt("goodNo")+"','"+value.getInt("purchaseNum")+"','"+ System.currentTimeMillis()+"','"+workerInfo.get("workerId")+"')";
+						          		+ "  values ('"+autoIncKey+"','"+value.getInt("good_id")+"','"+value.getInt("purchase_number")+"','"+ System.currentTimeMillis()+"','"+workerInfo.get("workerId")+"')";
 					    		System.out.println(stockFinishPurchase_insert);
 						        stmt2 = conn.prepareStatement(stockFinishPurchase_insert);   
 						       

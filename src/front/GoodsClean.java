@@ -95,7 +95,7 @@ public class GoodsClean extends HttpServlet{
 			value=(JSONObject) get_obj_array.get(i); 
 			try {    
 			       String frontAddOrderGoods_require = "select good_price,good_name,activity_price from goods"
-			          		+ " where good_id ='"+value.getString("goodNo")+"'";
+			          		+ " where good_id ='"+value.getString("goodId")+"'";
 			       
 			       stmt1 = conn.prepareStatement(frontAddOrderGoods_require);     
 			       r1= stmt1.executeQuery(); 
@@ -114,7 +114,7 @@ public class GoodsClean extends HttpServlet{
 			    		
 			    		if(autoIncKey==0) {
 			    		String frontAddOrderGoods_insert = "insert into market.order(good_id,good_name,good_number,good_price,user_id,worker_id,create_time,total_pay)"
-				          		+ "values ('"+value.getInt("goodNo")+"','"+r1.getString(2)+"','"+value.getInt("goodNum")+"','"+good_price+"','"+userId+"','"+workerId+"','"+ System.currentTimeMillis()+"','"+pay+"')";
+				          		+ "values ('"+value.getInt("goodId")+"','"+r1.getString(2)+"','"+value.getInt("goodNum")+"','"+good_price+"','"+userId+"','"+workerId+"','"+ System.currentTimeMillis()+"','"+pay+"')";
 			    	
 			    		
 				        stmt2 = (PreparedStatement)conn.prepareStatement(frontAddOrderGoods_insert,Statement.RETURN_GENERATED_KEYS);   
@@ -133,7 +133,7 @@ public class GoodsClean extends HttpServlet{
 				    	}
 				       }else {
 				    		String frontAddOrderGoods_insert = "insert into market.order(order_id,good_id,good_name,good_number,good_price,user_id,worker_id,create_time,total_pay)"
-					          		+ "  values ('"+autoIncKey+"','"+value.getString("goodNo")+"','"+r1.getString(2)+"','"+value.getString("goodNum")+"','"+good_price+"','"+userId+"','"+workerId+"','"+ System.currentTimeMillis()+"','"+pay+"')";
+					          		+ "  values ('"+autoIncKey+"','"+value.getString("goodId")+"','"+r1.getString(2)+"','"+value.getString("goodNum")+"','"+good_price+"','"+userId+"','"+workerId+"','"+ System.currentTimeMillis()+"','"+pay+"')";
 				    
 					        stmt2 = conn.prepareStatement(frontAddOrderGoods_insert);   
 					       

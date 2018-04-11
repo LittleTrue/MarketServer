@@ -16,6 +16,8 @@ public class CommonResult {
 	private String msg;
 	
 	private String token;
+	
+	private boolean status ;
 
 	public int getCode() {
 		return code;
@@ -24,7 +26,17 @@ public class CommonResult {
 	public void setCode(int code) {
 		this.code = code;
 	}
+	
+	public boolean getstatus() {
+		return status;
+	}
 
+	public void setstatus(boolean status) {
+		this.status = status;
+	}
+	
+	
+	
 	public Object getData() {
 		return data;
 	}
@@ -67,6 +79,13 @@ public class CommonResult {
 		super();
 		this.code = code;
 		this.data = data;
+		this.msg = msg;
+	}
+	
+	public CommonResult(boolean status,int code, String msg) {
+		super();
+		this.status = status;
+		this.code = code;
 		this.msg = msg;
 	}
 

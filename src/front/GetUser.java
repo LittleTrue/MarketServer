@@ -63,7 +63,7 @@ public class GetUser extends HttpServlet{
 	     
 	       if (!r.next()) {  	  
 	    		  ret_obj.put("status", false);
-	    		  ret_obj.put("message", "获取员工失败");
+	    		  ret_obj.put("message", "没有该会员");
 	    	}else {
 	    		userName=r.getString(1);
 	    		userId=r.getString(2);;

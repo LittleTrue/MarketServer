@@ -32,6 +32,7 @@ id="WebApp_ID" version="3.0">
         <filter-name>CorsFilter</filter-name>
         <url-pattern>/admin/*</url-pattern>
          <url-pattern>/front/*</url-pattern>
+         <url-pattern>/stock/*</url-pattern>
          <url-pattern>/login/logout</url-pattern>
            <url-pattern>/user/info</url-pattern>
     </filter-mapping>
@@ -104,7 +105,7 @@ id="WebApp_ID" version="3.0">
   
   <servlet-mapping>  
    <servlet-name>stockGetGoodsType</servlet-name>  
-   <url-pattern>/admin/stock/type</url-pattern> 
+   <url-pattern>/stock/inventory/type</url-pattern> 
    </servlet-mapping> 
    
    
@@ -134,7 +135,7 @@ id="WebApp_ID" version="3.0">
   </servlet> 
   <servlet-mapping>  
    <servlet-name>stockGetGoodsStock</servlet-name>  
-   <url-pattern>/admin/stock/list</url-pattern> 
+   <url-pattern>/stock/inventory/list</url-pattern> 
    </servlet-mapping> 
    
    <servlet>  
@@ -205,6 +206,15 @@ id="WebApp_ID" version="3.0">
    <url-pattern>/admin/purchase/storage</url-pattern> 
    </servlet-mapping> 
    
+   <servlet>  
+      <servlet-name>managerDeletePurchase</servlet-name>  
+      <servlet-class>manager.DeletePurchase</servlet-class> 
+  </servlet> 
+  
+  <servlet-mapping>  
+   <servlet-name>managerDeletePurchase</servlet-name>  
+   <url-pattern>/admin/purchase/delete</url-pattern> 
+   </servlet-mapping> 
   
    
    

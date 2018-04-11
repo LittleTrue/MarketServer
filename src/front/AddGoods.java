@@ -32,7 +32,9 @@ public class AddGoods extends HttpServlet {
 		 
 		 String good_price;
 		 String activity_price;
-		 
+		 String good_id;
+		 String good_name;
+		 String good_num;
 		 conn=login.Login.getCon();
 		 
 		 System.out.println("front被访问了");
@@ -45,32 +47,43 @@ public class AddGoods extends HttpServlet {
 //		 resp.setHeader("content-type","text/html;charset=UTF-8");
 
 
-		  goodId = req.getParameter("goodNo");////key -value get方式获取url的键值对 
+		  goodId = req.getParameter("goodId");////key -value get方式获取url的键值对 
+		  good_num = req.getParameter("goodNum");
+		  
 		  System.out.println(goodId);
 		  PrintWriter out=resp.getWriter();   
 		  
 		  
 		 JSONObject ret_obj = new JSONObject();
+		 JSONObject ret_obj_father = new JSONObject();
 		 
-  
+		 
 	       try {    
-	       String frontAddGoods_require = "select good_price,activity_price from goods"
+	       String frontAddGoods_require = "select good_price,activity_price,good_id,good_name from goods"
 	          		+ " where good_id ='"+goodId+"'";
 	       PreparedStatement stmt = conn.prepareStatement(frontAddGoods_require);     
 	       r= stmt.executeQuery(); 
 	     
-	       if (!r.next()) {  	  
-	    		  ret_obj.put("status", false);
-	    		  ret_obj.put("message", "添加商品失败");
+	       if (!r.next()) {  
+	    	   ret_obj_father.put("message","没有该商品");
+	    	   ret_obj_father.put("status", false);
+	    		 
 	    	}else {
 	    		good_price=r.getString(1);
 	    		activity_price=r.getString(2);
-	    		
+	    	    good_id=r.getString(3);
+	    	    good_name=r.getString(4);
+	    	  
 	    		if(activity_price!=null) {
 	    			good_price=activity_price;
 	    		}
-	    	   	ret_obj.put("status",true);
+	    	   	
 	    		ret_obj.put("good_price",good_price);  
+	    		ret_obj.put("good_name",good_name);
+	    		ret_obj.put("good_id",good_id);
+	    		ret_obj.put("good_num",good_num);
+	    		ret_obj_father.put("status",true);
+	    		ret_obj_father.put("info",ret_obj);
 	          }
 	       
 	       stmt.close();
@@ -86,7 +99,7 @@ public class AddGoods extends HttpServlet {
 	          } 
 		 	
 		 	
-	        out.print(ret_obj.toString());  
+	        out.print(ret_obj_father.toString());  
 	        out.flush();  
 	       
 	    }  
