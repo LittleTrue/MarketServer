@@ -51,7 +51,7 @@ public class AddPurchaseGoods extends HttpServlet{
 		 JSONArray ret_obj_array = new JSONArray();
   
 	       try {    
-	       String managerAddPurchaseGoods_query = "SELECT good_name,good_id FROM goods WHERE good_id LIKE '%"+target+"%' or good_name LIKE '%"+target+"%'";
+	       String managerAddPurchaseGoods_query = "SELECT good_name,good_id,good_price FROM goods WHERE good_id LIKE '%"+target+"%'";
 	       PreparedStatement stmt = conn.prepareStatement(managerAddPurchaseGoods_query);     
 	       r= stmt.executeQuery(); 
 	       

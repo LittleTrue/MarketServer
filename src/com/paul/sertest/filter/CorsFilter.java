@@ -44,7 +44,7 @@ public class CorsFilter implements Filter {
 		
 		HttpServletRequest request = (HttpServletRequest) arg0;
 		HttpServletResponse response = (HttpServletResponse) arg1;
-		
+		String token;
 //		 System.out.println("---------获取请求数据-------------");  
 //		 Enumeration es = request.getParameterNames();  
 //	        while (es.hasMoreElements()) {  
@@ -58,8 +58,14 @@ public class CorsFilter implements Filter {
 		response.setHeader("Access-Control-Max-Age","3600");
 		response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, token");
 		
-	
-		String token = request.getHeader("gdufe-shop");
+//		if(request.getRequestURI().equals("/MarketServer/user/info")){
+//		 token = request.getParameter("gdufe-shop");
+//		 System.out.println("get");
+//		}else {
+		
+		token = request.getHeader("gdufe-shop");
+		//}
+		
 		System.out.println(token);
 		if(token ==null||token =="") {
 			PrintWriter printWriter = response.getWriter();
@@ -70,6 +76,7 @@ public class CorsFilter implements Filter {
 		
 		CheckResult checkResult = TokenMgr.validateJWT(token);
 		System.out.println("token是否成功:"+checkResult.isSuccess());
+		
 		
 		if (checkResult.isSuccess()) {
 			conn=login.Login.getCon();
@@ -96,25 +103,27 @@ public class CorsFilter implements Filter {
 		    		if(r.getString(1).equals(token)){
 		    			
 		    			System.out.println("token有效");
+		    			arg2.doFilter(arg0,arg1);
 		    			
 		    		}else{
 		    			if(request.getRequestURI().equals("/MarketServer/login/logout")){
 		    				System.out.println("登出");
+		    				arg2.doFilter(arg0,arg1);
 		    			}else{	
 		    				
 		    			PrintWriter printWriter = response.getWriter();
 						printWriter.print(ResponseMgr.loginExpire());
 						printWriter.flush();
-						printWriter.close();}
+						printWriter.close();
+						
+		    			}
 		    		}
 		          } 
 				
 				
 			} catch (Exception e) {
 				e.printStackTrace();
-			}finally {
-				arg2.doFilter(arg0,arg1);
-			}		
+			}	
 		} else {
 			switch (checkResult.getErrCode()) {
 			

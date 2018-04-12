@@ -138,13 +138,14 @@ public class ModifyWorker extends HttpServlet{
      }
      
       String managerModifyWorker_require =sqlupdate+where;
+      
       System.out.println(managerModifyWorker_require);
       PreparedStatement stmt2 = conn.prepareStatement(managerModifyWorker_require);     
       modifyResult= stmt2.executeUpdate(); 
  
   		if(modifyResult==0) {  
 		  ret_obj.put("status", false);
-		  ret_obj.put("message", "删除员工失败");
+		  ret_obj.put("message", "修改员工失败");
   		}else {
 	   	ret_obj.put("status",true);
     	} 

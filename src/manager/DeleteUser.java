@@ -23,24 +23,24 @@ import net.sf.json.JSONString;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONException;
 
-public class DeleteWorker extends HttpServlet{
+public class DeleteUser extends HttpServlet{
 	private ResultSet r;
 	private static Connection conn = null;
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException { 
 		 int deleteResult;//方法变量定义
 
-		String workerId;//输入
+		String userId;//输入
 	 
 	 
 	 conn=login.Login.getCon();
 	 
-	 System.out.println("manager4被访问了");
+	 System.out.println("manager被访问了");
 	 
 	 req.setCharacterEncoding("utf-8");
 	 resp.setCharacterEncoding("utf-8"); 
 
-	 workerId = req.getParameter("id");////key -value get方式获取url的键值对 
+	 userId = req.getParameter("id");////key -value get方式获取url的键值对 
 	  
 	PrintWriter out=resp.getWriter();//输出流获取
 	
@@ -48,15 +48,15 @@ public class DeleteWorker extends HttpServlet{
 
 	 
        try {    
-       String stockGetPurchaseListDetail_delete = "DELETE  FROM worker"
-          		+ " where worker_id = "+workerId;
-       PreparedStatement stmt = conn.prepareStatement(stockGetPurchaseListDetail_delete);     
+       String managerDeleteUser_delete = "DELETE  FROM market.user"
+          		+ " where user_id = "+userId;
+       PreparedStatement stmt = conn.prepareStatement(managerDeleteUser_delete);     
        deleteResult= stmt.executeUpdate(); 
   
    	
    	if(deleteResult==0) {  
 		  ret_obj.put("status", false);
-		  ret_obj.put("message", "删除员工失败");
+		  ret_obj.put("message", "删除会员失败");
 	}else {
 	   	ret_obj.put("status",true);
      } 
@@ -82,12 +82,4 @@ public class DeleteWorker extends HttpServlet{
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {  
         this.doGet(req, resp);  
     }  
- @Override  
- protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {  
-     this.doGet(req, resp);  
- } 
- @Override  
- protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {  
-     this.doGet(req, resp);  
- } 
 }

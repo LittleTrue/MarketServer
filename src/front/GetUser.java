@@ -35,6 +35,8 @@ public class GetUser extends HttpServlet{
 		 
 		 String userName;
 		 String userId;//输出
+		 String userSex;
+		 String userPhone;
 		 
 		 System.out.println("front被访问了");
 		 
@@ -49,11 +51,11 @@ public class GetUser extends HttpServlet{
 		 PrintWriter out=resp.getWriter();   //输出流获取
 		  
 		 JSONObject ret_obj = new JSONObject();
-		 
+		 JSONObject ret_obj_father = new JSONObject();
 	      conn=login.Login.getCon();
 	      
 	       try {    
-	       String frontGetUser_require = "select user_name,user_id from user"
+	       String frontGetUser_require = "select user_name,user_id,user_sex,user_phone from user"
 	          		+ " where user_phone ='"+target+"' or user_id="+target;
 	       
 	       System.out.println(frontGetUser_require);
@@ -62,14 +64,19 @@ public class GetUser extends HttpServlet{
 	       r= stmt.executeQuery(); 
 	     
 	       if (!r.next()) {  	  
-	    		  ret_obj.put("status", false);
-	    		  ret_obj.put("message", "没有该会员");
+	    	   ret_obj_father.put("status", false);
+	    	   ret_obj_father.put("message", "没有该会员");
 	    	}else {
 	    		userName=r.getString(1);
-	    		userId=r.getString(2);;
-	    	   	ret_obj.put("status",true);
+	    		userId=r.getString(2);
+	    		userSex=r.getString(3);
+	    		userPhone=r.getString(4);
+	    		ret_obj_father.put("status",true);
 	    		ret_obj.put("name",userName);  
-	    		ret_obj.put("userId",userId);
+	    		ret_obj.put("id",userId);
+	    		ret_obj.put("sex",userSex);
+	    		ret_obj.put("tel",userPhone);
+	    		ret_obj_father.put("info",ret_obj);
 	          } 
 	       stmt.close();
 	       }catch (SQLException e) {  	
@@ -83,7 +90,7 @@ public class GetUser extends HttpServlet{
 	              }
 	          }
 
-	        out.print(ret_obj.toString());  
+	        out.print(ret_obj_father.toString());  
 	        out.flush();  
 	       
 	    }  

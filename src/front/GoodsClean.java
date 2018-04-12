@@ -37,6 +37,7 @@ public class GoodsClean extends HttpServlet{
 		 JSONObject value;
 		 int autoIncKey=0;
 		 int insertResult;
+		 int[]  updateResult;
 		 float good_price;
 		 float activity_price;
 		 PreparedStatement stmt1;
@@ -44,6 +45,8 @@ public class GoodsClean extends HttpServlet{
 		
 		 int userIntegral=0;
 		 int newuserIntegral = 0;
+		 
+		 String frontGoodsClean_update;
 		 
 		 String workerId="";//进行操作中的员工session控制
 		 
@@ -53,14 +56,14 @@ public class GoodsClean extends HttpServlet{
 			e1.printStackTrace();
 		}
 		 
-		  workerId=workerInfo.get("workerId");;
+		  workerId=workerInfo.get("workerId");
 		 
 		 
-		 conn=login.Login.getCon();
+		 
 		 
 		 float pay;
 		 String order;
-		 int userId;
+		 String userId;
 		 
 		 
 		 String user_integral;
@@ -80,7 +83,12 @@ public class GoodsClean extends HttpServlet{
 		 JSONObject get_obj=JSONObject.fromString(input);
 		 
 		 pay=Float.parseFloat(get_obj.getString("pay"));
-		 userId=get_obj.getInt("userId");
+		 userId=get_obj.getString("userId");
+		 System.out.println(userId);
+		 
+		 if(userId.equals("")) {
+			 userId="0";
+		 }
 		 order=get_obj.getString("order");
 		 
 		 JSONObject ret_obj = new JSONObject();
@@ -89,12 +97,15 @@ public class GoodsClean extends HttpServlet{
 			
 	      
 		 JSONArray get_obj_array=JSONArray.fromObject(order);//需要对改数组再进行一次json数组的转码
-		 
+		 try { 
+			 conn=login.Login.getCon();
+		     conn.setAutoCommit(false); 
+			 Statement stmt3 =conn.createStatement();
 		 
 		 for (int i = 0; i < get_obj_array.length(); i++) {
 			value=(JSONObject) get_obj_array.get(i); 
-			try {    
-			       String frontAddOrderGoods_require = "select good_price,good_name,activity_price from goods"
+			  
+			       String frontAddOrderGoods_require = "select good_price,good_name from goods"
 			          		+ " where good_id ='"+value.getString("goodId")+"'";
 			       
 			       stmt1 = conn.prepareStatement(frontAddOrderGoods_require);     
@@ -105,12 +116,18 @@ public class GoodsClean extends HttpServlet{
 			    		  ret_obj.put("message", "商品不存在或信息出错");
 			    		  break;  
 			    	}else {
-			    		good_price=r1.getFloat(1);
-			    		activity_price=r1.getFloat(3);
 			    		
-			    		if(activity_price!=0) {
-			    			good_price=activity_price;
-			    		}
+			    		frontGoodsClean_update="update goods set good_stock = good_stock -"+value.getInt("goodNum")
+		          		+ " where good_id = "+value.getInt("goodId");
+			    		
+			    		stmt3.addBatch(frontGoodsClean_update);
+			    		
+			    		good_price=r1.getFloat(1);
+//			    		activity_price=r1.getFloat(3);
+//			    		
+//			    		if(activity_price!=0) {
+//			    			good_price=activity_price;
+//			    		}
 			    		
 			    		if(autoIncKey==0) {
 			    		String frontAddOrderGoods_insert = "insert into market.order(good_id,good_name,good_number,good_price,user_id,worker_id,create_time,total_pay)"
@@ -146,15 +163,21 @@ public class GoodsClean extends HttpServlet{
 					       
 				       }
 			    		
-			          }
-			      
-            	   
-			       }catch (SQLException e) {  	
-			        	  e.printStackTrace();
-		  
-			          } 
-	        }//for
+			          }     
+	        }//for 
+		 updateResult=stmt3.executeBatch();
+	     	conn.commit();
+	       if (updateResult[0] == 0) {
+	    	   ret_obj.put("status", false);
+	    	   ret_obj.put("message", "更新库存状态失败");
+	          }
+	       
+		 }catch (SQLException e) {  	
+			 e.printStackTrace();
+	  
+		 	} 
 		 
+		 if(userId.equals("")) {
 		 try {
 		 String frontUser_require = "select user_integral from market.user"
 	          		+ " where user_id ='"+userId+"'";
@@ -197,6 +220,9 @@ public class GoodsClean extends HttpServlet{
                  e.printStackTrace();
             }
         }
+		 }else {
+			 ret_obj.put("status",true);
+		 }
 	        out.print(ret_obj.toString());  
 	        out.flush();   
 	    }  

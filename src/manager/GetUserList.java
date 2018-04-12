@@ -1,6 +1,5 @@
 package manager;
 
-import java.sql.Statement;
 import java.io.BufferedReader;
 import java.io.IOException;  
 import java.io.PrintWriter;
@@ -9,6 +8,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;  
@@ -25,11 +25,11 @@ import net.sf.json.JSONString;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONException;
 
-public class GetWorker extends HttpServlet  {
-	private static Connection conn = null;
+public class GetUserList extends HttpServlet{
 	private ResultSet r;
+	private static Connection conn = null;
 	
-	 protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException { 
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException { 
 		 int total=0;//方法变量定义
 	     int depage[]= {0,1};
 		 
@@ -37,10 +37,9 @@ public class GetWorker extends HttpServlet  {
 		 int page; 
 		 int size;
 		
-		 
 		 conn=login.Login.getCon();
 		 
-		 System.out.println("front1被访问了");
+		 System.out.println("manager被访问了");
 		 
 		 req.setCharacterEncoding("utf-8");
 		 resp.setCharacterEncoding("utf-8"); 
@@ -57,11 +56,12 @@ public class GetWorker extends HttpServlet  {
 		 JSONArray ret_obj_array = new JSONArray();
 		 
   
-		 String sql = "SELECT worker_id as no,worker_name as name,worker_sex as sex,worker_position as job,worker_phone as tel FROM worker where worker_position <>'manager'"+
-				 " ORDER BY worker_id ASC"+" LIMIT "+depage[0]+","+depage[1];
+		 String managerGetUserList_query= "SELECT * from market.user"+
+				 " ORDER BY regist_time DESC"+" LIMIT "+depage[0]+","+depage[1];
 		    try{
+  	
 	        	// 建立查询对象
-	        	PreparedStatement pstm = conn.prepareStatement(sql);
+	        	PreparedStatement pstm = conn.prepareStatement(managerGetUserList_query);
 	        	//执行查询
 	        	 r = pstm.executeQuery();
 	        	ret_obj_array =login.Login.resultSetToJsonArry(r);
@@ -102,5 +102,4 @@ public class GetWorker extends HttpServlet  {
 	    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {  
 	        this.doGet(req, resp);  
 	    }  
-
 }

@@ -31,8 +31,10 @@ id="WebApp_ID" version="3.0">
 	<filter-mapping>
         <filter-name>CorsFilter</filter-name>
         <url-pattern>/admin/*</url-pattern>
+         <url-pattern>/good/*</url-pattern>
          <url-pattern>/front/*</url-pattern>
          <url-pattern>/stock/*</url-pattern>
+           <url-pattern>/vip/*</url-pattern>
          <url-pattern>/login/logout</url-pattern>
            <url-pattern>/user/info</url-pattern>
     </filter-mapping>
@@ -55,7 +57,7 @@ id="WebApp_ID" version="3.0">
   </servlet> 
   <servlet-mapping>  
    <servlet-name>frontAddGoods</servlet-name>  
-   <url-pattern>/front/good/in</url-pattern> 
+   <url-pattern>/good/info</url-pattern> 
    </servlet-mapping> 
    
     <servlet>  
@@ -95,7 +97,7 @@ id="WebApp_ID" version="3.0">
   
   <servlet-mapping>  
    <servlet-name>stockAddGoodsInfo</servlet-name>  
-   <url-pattern>/admin/good/info</url-pattern> 
+   <url-pattern>/good/addInfo</url-pattern> 
    </servlet-mapping> 
    
     <servlet>  
@@ -153,7 +155,7 @@ id="WebApp_ID" version="3.0">
   </servlet> 
   <servlet-mapping>  
    <servlet-name>managerAddPurchaseGoods</servlet-name>  
-   <url-pattern>/admin/good/ajax/goodInfo</url-pattern> 
+   <url-pattern>/good/ajax/goodInfo</url-pattern> 
    </servlet-mapping> 
    	
    	 <servlet>  
@@ -215,9 +217,56 @@ id="WebApp_ID" version="3.0">
    <servlet-name>managerDeletePurchase</servlet-name>  
    <url-pattern>/admin/purchase/delete</url-pattern> 
    </servlet-mapping> 
+   
+   <servlet>  
+      <servlet-name>accountantSetGoodPrice</servlet-name>  
+      <servlet-class>accountant.SetGoodPrice</servlet-class> 
+  </servlet> 
   
+  <servlet-mapping>  
+   <servlet-name>accountantSetGoodPrice</servlet-name>  
+   <url-pattern>/good/priceSetting</url-pattern> 
+   </servlet-mapping> 
+ 
+  <servlet>  
+      <servlet-name>stockGetLossList</servlet-name>  
+      <servlet-class>stock.GetLossList</servlet-class> 
+  </servlet> 
+  
+  <servlet-mapping>  
+   <servlet-name>stockGetLossList</servlet-name>  
+   <url-pattern>/stock/loss/list</url-pattern> 
+   </servlet-mapping>
    
+    <servlet>  
+      <servlet-name>managerGetUserList</servlet-name>  
+      <servlet-class>manager.GetUserList</servlet-class> 
+  </servlet> 
+  
+  <servlet-mapping>  
+   <servlet-name>managerGetUserList</servlet-name>  
+   <url-pattern>/vip/list</url-pattern> 
+   </servlet-mapping>
+    
+     <servlet>  
+      <servlet-name>managerDeleteUser</servlet-name>  
+      <servlet-class>manager.DeleteUser</servlet-class> 
+  </servlet> 
+  
+  <servlet-mapping>  
+   <servlet-name>managerDeleteUser</servlet-name>  
+   <url-pattern>/vip/delete</url-pattern> 
+   </servlet-mapping>
    
+     <servlet>  
+      <servlet-name>stockAddLoss</servlet-name>  
+      <servlet-class>stock.AddLoss</servlet-class> 
+  </servlet> 
+  
+  <servlet-mapping>  
+   <servlet-name>stockAddLoss</servlet-name>  
+   <url-pattern>/stock/loss/add</url-pattern> 
+   </servlet-mapping>
 </web-app> 
  
   

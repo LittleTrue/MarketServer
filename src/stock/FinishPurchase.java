@@ -40,6 +40,7 @@ public class FinishPurchase extends HttpServlet{
 		 String list;
 		PreparedStatement stmt2;
 		String stockFinishPurchase_update;
+		String stockFinishPurchase_update_for_stock;
 		
 		 
 		 String workerId;
@@ -76,15 +77,22 @@ public class FinishPurchase extends HttpServlet{
 		 		 conn=login.Login.getCon();
 			     conn.setAutoCommit(false); 
 				 Statement stmt1 =conn.createStatement();
+				
 	      for (int i = 0; i < get_obj_array.length(); i++) {
 				value=(JSONObject) get_obj_array.get(i); 
 			  
 				        stockFinishPurchase_update = "update purchase set purchase_status ="+value.getInt("purchase_status")
 				          		+ " where purchase_id = "+value.getInt("purchase_id")+" AND good_id="+value.getInt("good_id");
-//				        stmt1=conn.prepareStatement(stockFinishPurchase_update); 
+//				       
 				        stmt1.addBatch(stockFinishPurchase_update);
-				  
-				    		if(autoIncKey==0) {
+				        
+				        stockFinishPurchase_update_for_stock = "update goods set good_stock = good_stock +"+value.getInt("purchase_number")
+		          		+ " where good_id = "+value.getInt("good_id");
+				        
+				        if(value.getInt("purchase_status")==1) {
+				        stmt1.addBatch( stockFinishPurchase_update_for_stock);
+				      
+				    	if(autoIncKey==0) {
 				    		String stockFinishPurchase_insert = "insert into stock(good_id,instock_number,stock_time,worker_id)"
 					          		+ "values ('"+value.getInt("good_id")+"','"+value.getInt("purchase_number")+"','"+System.currentTimeMillis()+"','"+workerInfo.get("workerId")+"')";
 				    	System.out.println(stockFinishPurchase_insert);
@@ -114,10 +122,10 @@ public class FinishPurchase extends HttpServlet{
 						    	   break;  
 						       }
 						       
-					       }      
+					       }
+				        	}
 		        }//for
 	    	
-	    	   	
 			       updateResult=stmt1.executeBatch();
 			     	conn.commit();
 			       if (updateResult[0] == 0) {
@@ -125,7 +133,7 @@ public class FinishPurchase extends HttpServlet{
 			    	   ret_obj.put("message", "更新采购表状态失败");
 			          }else {
 			        	  ret_obj.put("status",true);
-				    	  ret_obj.put("message", "更新采购表状态及入库成功"); 
+				    	  ret_obj.put("message", "更新采购表状态,更新库存及入库成功"); 
 			          }
 			     
 		          }catch (SQLException e) {  	

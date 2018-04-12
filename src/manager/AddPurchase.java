@@ -127,7 +127,8 @@ public class AddPurchase extends HttpServlet{
 			  
 				          } 
 		        }//for
-	          if(ret_obj.length()!=0) {
+	      System.out.println(ret_obj.length());
+	          if(ret_obj.length()==0) {
 	        		ret_obj.put("status",true);
 	          }
 

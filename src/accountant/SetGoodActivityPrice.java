@@ -1,4 +1,4 @@
-package manager;
+package accountant;
 import java.io.BufferedReader;
 import java.io.IOException;  
 import java.io.PrintWriter;
@@ -21,46 +21,53 @@ import com.sun.javafx.collections.MappingChange.Map;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONString;
 import net.sf.json.JSONException;
-
-public class DeletePurchase  extends HttpServlet{
-	
-	
-	private ResultSet r;
+//设置活动优惠
+public class SetGoodActivityPrice extends HttpServlet{
 	private static Connection conn = null;
 	
-	 protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException { 
-		 int  deleteResult;//方法变量定义
+	 protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {  
+		 String input;
 		 
-		 String purchaseId;
-	
-		 conn=login.Login.getCon();
+		  int updateResult;//方法变量定义
 		 
-		 System.out.println("manager4被访问了");
+		 String goodId;
+		 String price;//输入
+		 
+		 
+		 System.out.println("acountant2被访问了");
 		 
 		 req.setCharacterEncoding("utf-8");
 		 resp.setCharacterEncoding("utf-8"); 
 
-		 purchaseId = req.getParameter("id");////key -value get方式获取url的键值对 
+
+		 input=login.Login.getRequestBody(req);//输入流获取
+		 PrintWriter out=resp.getWriter();;//输出流获取
 		  
-		PrintWriter out=resp.getWriter();;//输出流获取
+	
+		 JSONObject get_obj=JSONObject.fromString(input);
 		
+		 goodId=get_obj.getString("goodId");
+		 price=get_obj.getString("price");
+		  
 		 JSONObject ret_obj = new JSONObject();
 		 
-	
+	      conn=login.Login.getCon();
+	      
 	       try {    
-	    	   String managerDeletePurchase_delete = "DELETE  FROM purchase"
-	             		+ " where purchase_id = "+purchaseId;
-	          PreparedStatement stmt = conn.prepareStatement(managerDeletePurchase_delete);     
-	          deleteResult= stmt.executeUpdate(); 
+	       String accountantSetGoodActivityPrice_update = "UPDATE goods SET activity_price ="+price+
+	          		" where good_id ="+goodId;
+	      
+	       PreparedStatement stmt = conn.prepareStatement(accountantSetGoodActivityPrice_update);     
+	      
+	       updateResult= stmt.executeUpdate(); 
 	     
-	      	
-	      	if(deleteResult==0) {  
-	   		  ret_obj.put("status", false);
-	   		  ret_obj.put("message", "删除采购单失败");
-	   	}else {
-	   	   	ret_obj.put("status",true);
-	        } 
-	       stmt.close();
+	       if(updateResult==0) {
+   			ret_obj.put("status", false);
+       		ret_obj.put("message", "设置活动价格失败");
+       		
+   			}else {
+   			ret_obj.put("status",true);
+   			}
 	       }catch (SQLException e) {  	
 	        	  e.printStackTrace();
   
@@ -71,6 +78,7 @@ public class DeletePurchase  extends HttpServlet{
 	                   e.printStackTrace();
 	              }
 	          }
+	          
 	         
 	        out.print(ret_obj.toString());  
 	        out.flush();  
