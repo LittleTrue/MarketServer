@@ -22,19 +22,22 @@ import net.sf.json.JSONObject;
 import net.sf.json.JSONString;
 import net.sf.json.JSONException;
 //设置活动优惠
-public class SetGoodActivityPrice extends HttpServlet{
+public class SetActivity extends HttpServlet{
 	private static Connection conn = null;
-	
+	private ResultSet r;
+
 	 protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {  
 		 String input;
 		 
-		  int updateResult;//方法变量定义
-		 
-		 String goodId;
-		 String price;//输入
+		 int insertResult;//方法变量定义
 		 
 		 
-		 System.out.println("acountant2被访问了");
+		 String goodId;//输入
+		 String goodNum;
+		 String discountPrice;
+		 
+		 
+		 System.out.println("acountant被访问了");
 		 
 		 req.setCharacterEncoding("utf-8");
 		 resp.setCharacterEncoding("utf-8"); 
@@ -43,31 +46,46 @@ public class SetGoodActivityPrice extends HttpServlet{
 		 input=login.Login.getRequestBody(req);//输入流获取
 		 PrintWriter out=resp.getWriter();;//输出流获取
 		  
+		 System.out.println(input);
 	
 		 JSONObject get_obj=JSONObject.fromString(input);
 		
 		 goodId=get_obj.getString("goodId");
-		 price=get_obj.getString("price");
-		  
+		 goodNum=get_obj.getString("num");
+		 discountPrice=get_obj.getString("discount");
+		 
+		 
 		 JSONObject ret_obj = new JSONObject();
 		 
 	      conn=login.Login.getCon();
 	      
+	      
 	       try {    
-	       String accountantSetGoodActivityPrice_update = "UPDATE goods SET activity_price ="+price+
-	          		" where good_id ="+goodId;
-	      
-	       PreparedStatement stmt = conn.prepareStatement(accountantSetGoodActivityPrice_update);     
-	      
-	       updateResult= stmt.executeUpdate(); 
+	       String acountantSetActivity_require = "select * from activity"
+	          		+ " where good_id ="+goodId+" AND is_bind = 0";
+	       PreparedStatement stmt1 = conn.prepareStatement(acountantSetActivity_require);     
+	       r= stmt1.executeQuery(); 
 	     
-	       if(updateResult==0) {
-   			ret_obj.put("status", false);
-       		ret_obj.put("message", "设置活动价格失败");
-       		
-   			}else {
-   			ret_obj.put("status",true);
-   			}
+	       if (r.next()) {  	  
+	    		  ret_obj.put("status", false);
+	    		  ret_obj.put("message", "添加优惠失败");
+	    	}else {
+	    	   
+	       String acountantSetActivity_insert = "INSERT INTO activity(good_id,is_bind,discount_num,good_number)"
+	 	          		+ " value("+goodId+","+0+","+discountPrice+","+goodNum+")";
+	       System.out.println(acountantSetActivity_insert);
+	 	   PreparedStatement stmt2 = conn.prepareStatement(acountantSetActivity_insert);     
+	 	   insertResult= stmt2.executeUpdate();
+	 	   
+	 	   if(insertResult==0) {
+ 	   			ret_obj.put("status", false);
+ 	       		ret_obj.put("message", "插入活动表失败");
+ 	       		
+ 	   			}else {
+ 	   			ret_obj.put("status",true);
+ 	   			}
+	    		
+	          } 
 	       }catch (SQLException e) {  	
 	        	  e.printStackTrace();
   
@@ -89,5 +107,6 @@ public class SetGoodActivityPrice extends HttpServlet{
 	    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {  
 	        this.doGet(req, resp);  
 	    }  
+
 
 }

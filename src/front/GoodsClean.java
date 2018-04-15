@@ -42,7 +42,7 @@ public class GoodsClean extends HttpServlet{
 		 float activity_price;
 		 PreparedStatement stmt1;
 		 PreparedStatement stmt2; 
-		
+		 long time =System.currentTimeMillis();
 		 int userIntegral=0;
 		 int newuserIntegral = 0;
 		 
@@ -131,7 +131,7 @@ public class GoodsClean extends HttpServlet{
 			    		
 			    		if(autoIncKey==0) {
 			    		String frontAddOrderGoods_insert = "insert into market.order(good_id,good_name,good_number,good_price,user_id,worker_id,create_time,total_pay)"
-				          		+ "values ('"+value.getInt("goodId")+"','"+r1.getString(2)+"','"+value.getInt("goodNum")+"','"+good_price+"','"+userId+"','"+workerId+"','"+ System.currentTimeMillis()+"','"+pay+"')";
+				          		+ "values ('"+value.getInt("goodId")+"','"+r1.getString(2)+"','"+value.getInt("goodNum")+"','"+good_price+"','"+userId+"','"+workerId+"','"+ time+"','"+pay+"')";
 			    	
 			    		
 				        stmt2 = (PreparedStatement)conn.prepareStatement(frontAddOrderGoods_insert,Statement.RETURN_GENERATED_KEYS);   
@@ -150,7 +150,7 @@ public class GoodsClean extends HttpServlet{
 				    	}
 				       }else {
 				    		String frontAddOrderGoods_insert = "insert into market.order(order_id,good_id,good_name,good_number,good_price,user_id,worker_id,create_time,total_pay)"
-					          		+ "  values ('"+autoIncKey+"','"+value.getString("goodId")+"','"+r1.getString(2)+"','"+value.getString("goodNum")+"','"+good_price+"','"+userId+"','"+workerId+"','"+ System.currentTimeMillis()+"','"+pay+"')";
+					          		+ "  values ('"+autoIncKey+"','"+value.getString("goodId")+"','"+r1.getString(2)+"','"+value.getString("goodNum")+"','"+good_price+"','"+userId+"','"+workerId+"','"+ time+"','"+pay+"')";
 				    
 					        stmt2 = conn.prepareStatement(frontAddOrderGoods_insert);   
 					       

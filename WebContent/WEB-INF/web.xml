@@ -57,7 +57,7 @@ id="WebApp_ID" version="3.0">
   </servlet> 
   <servlet-mapping>  
    <servlet-name>frontAddGoods</servlet-name>  
-   <url-pattern>/good/info</url-pattern> 
+   <url-pattern>/front/cart/in</url-pattern> 
    </servlet-mapping> 
    
     <servlet>  
@@ -266,6 +266,70 @@ id="WebApp_ID" version="3.0">
   <servlet-mapping>  
    <servlet-name>stockAddLoss</servlet-name>  
    <url-pattern>/stock/loss/add</url-pattern> 
+   </servlet-mapping>
+   
+     <servlet>  
+      <servlet-name>managerGetGoodsList</servlet-name>  
+      <servlet-class>manager.GetGoodsList</servlet-class> 
+  </servlet> 
+  
+  <servlet-mapping>  
+   <servlet-name>managerGetGoodsList</servlet-name>  
+   <url-pattern>/good/list</url-pattern> 
+   </servlet-mapping>
+   
+   <servlet>  
+      <servlet-name>managerGetOrderList</servlet-name>  
+      <servlet-class>manager.GetOrderList</servlet-class> 
+  </servlet> 
+  <servlet-mapping>  
+   <servlet-name>managerGetOrderList</servlet-name>  
+   <url-pattern>/order/list</url-pattern> 
+   </servlet-mapping>
+   
+   <servlet>  
+      <servlet-name>accountantSetActivity</servlet-name>  
+      <servlet-class>accountant.SetActivity</servlet-class> 
+  </servlet> 
+  <servlet-mapping>  
+   <servlet-name>accountantSetActivity</servlet-name>  
+   <url-pattern>/good/priceSetting/single</url-pattern> 
+   </servlet-mapping>
+   
+     <servlet>  
+      <servlet-name>accountantSetActivityBind</servlet-name>  
+      <servlet-class>accountant.SetActivityBind</servlet-class> 
+  </servlet> 
+  <servlet-mapping>  
+   <servlet-name>accountantSetActivityBind</servlet-name>  
+   <url-pattern>/good/priceSetting/multiple</url-pattern> 
+   </servlet-mapping>
+   
+   <servlet>  
+      <servlet-name>stockGetLackGoods</servlet-name>  
+      <servlet-class>stock.GetLackGoods</servlet-class> 
+  </servlet> 
+  <servlet-mapping>  
+   <servlet-name>stockGetLackGoods</servlet-name>  
+   <url-pattern>/good/GetLackGoods</url-pattern> 
+   </servlet-mapping>
+   
+    <servlet>  
+      <servlet-name>stockModifyGoods</servlet-name>  
+      <servlet-class>stock.ModifyGoods</servlet-class> 
+  </servlet> 
+  <servlet-mapping>  
+   <servlet-name>stockModifyGoods</servlet-name>  
+   <url-pattern>/good/modifyInfo</url-pattern> 
+   </servlet-mapping>
+   
+    <servlet>  
+      <servlet-name>managerGetGoodsPrice</servlet-name>  
+      <servlet-class>manager.GetGoodsPrice</servlet-class> 
+  </servlet> 
+  <servlet-mapping>  
+   <servlet-name>managerGetGoodsPrice</servlet-name>  
+   <url-pattern>/good/priceCurve</url-pattern> 
    </servlet-mapping>
 </web-app> 
  

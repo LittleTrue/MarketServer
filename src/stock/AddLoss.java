@@ -40,7 +40,7 @@ public class AddLoss extends HttpServlet{
 		 PreparedStatement stmt2; 
 		 int updateResult;
 		 int autoIncKey=0;
-			 
+		long time=System.currentTimeMillis();
 		 String workerId="";//进行操作中的员工session控制
 		 
 		 try {
@@ -79,7 +79,7 @@ public class AddLoss extends HttpServlet{
 				try {    
 				    		if(autoIncKey==0) {
 				    		String stockAddLoss_insert = "insert into market.loss(good_id,good_number,loss_case,loss_time,worker_id)"
-					          		+ "values ('"+value.getInt("goodId")+"','"+value.getInt("lossNum")+"','"+value.getInt("lossCase")+"','"+ System.currentTimeMillis()+"','"+workerId+"')";
+					          		+ "values ('"+value.getInt("goodId")+"','"+value.getInt("lossNum")+"','"+value.getInt("lossCase")+"','"+time+"','"+workerId+"')";
 				    	
 				    		System.out.println(stockAddLoss_insert);
 					        stmt2 = (PreparedStatement)conn.prepareStatement(stockAddLoss_insert,Statement.RETURN_GENERATED_KEYS);   
@@ -98,7 +98,7 @@ public class AddLoss extends HttpServlet{
 					    	}
 					       }else {
 					    	   String stockAddLoss_insert = "insert into market.loss(loss_id,good_id,good_number,loss_case,loss_time,worker_id)"
-						          		+ "values ('"+autoIncKey+"','"+value.getInt("goodId")+"','"+value.getInt("lossNum")+"','"+value.getInt("lossCase")+"','"+ System.currentTimeMillis()+"','"+workerId+"')";
+						          		+ "values ('"+autoIncKey+"','"+value.getInt("goodId")+"','"+value.getInt("lossNum")+"','"+value.getInt("lossCase")+"','"+time+"','"+workerId+"')";
 					    
 						        stmt2 = conn.prepareStatement(stockAddLoss_insert);   
 						       
