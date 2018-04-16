@@ -55,7 +55,7 @@ public class GetLossList extends HttpServlet{
 		 JSONArray ret_obj_array = new JSONArray();
 		 
   
-		 String stockgetLossList_query= "SELECT distinct loss_id,loss_time,worker_id from loss"+
+		 String stockgetLossList_query= "SELECT distinct loss_id,loss_time,worker_name,a.worker_id from loss a JOIN worker c ON a.worker_id=c.worker_id"+
 				 " ORDER BY loss_time ASC"+" LIMIT "+depage[0]+","+depage[1];
 		    try{
 		    	// 建立Statement对象

@@ -33,6 +33,7 @@ id="WebApp_ID" version="3.0">
         <url-pattern>/admin/*</url-pattern>
          <url-pattern>/good/*</url-pattern>
          <url-pattern>/front/*</url-pattern>
+         <url-pattern>/order/*</url-pattern>
          <url-pattern>/stock/*</url-pattern>
            <url-pattern>/vip/*</url-pattern>
          <url-pattern>/login/logout</url-pattern>
@@ -311,7 +312,7 @@ id="WebApp_ID" version="3.0">
   </servlet> 
   <servlet-mapping>  
    <servlet-name>stockGetLackGoods</servlet-name>  
-   <url-pattern>/good/GetLackGoods</url-pattern> 
+   <url-pattern>/good/lack/list</url-pattern> 
    </servlet-mapping>
    
     <servlet>  
@@ -330,6 +331,79 @@ id="WebApp_ID" version="3.0">
   <servlet-mapping>  
    <servlet-name>managerGetGoodsPrice</servlet-name>  
    <url-pattern>/good/priceCurve</url-pattern> 
+   </servlet-mapping>
+   
+   
+    <servlet>  
+      <servlet-name>accountantGetActivity</servlet-name>  
+      <servlet-class>accountant.GetActivity</servlet-class> 
+  </servlet> 
+  <servlet-mapping>  
+   <servlet-name>accountantGetActivity</servlet-name>  
+   <url-pattern>/good/priceSetting/list</url-pattern> 
+   </servlet-mapping>
+   
+    <servlet>  
+      <servlet-name>accountantGetActivityDetail</servlet-name>  
+      <servlet-class>accountant.GetActivityDetail</servlet-class> 
+  </servlet> 
+  <servlet-mapping>  
+   <servlet-name>accountantGetActivityDetail</servlet-name>  
+   <url-pattern>/good/priceSetting/detail</url-pattern> 
+   </servlet-mapping>
+   
+    <servlet>  
+      <servlet-name>stockGetLossDetail</servlet-name>  
+      <servlet-class>stock.GetLossDetail</servlet-class> 
+  </servlet> 
+  <servlet-mapping>  
+   <servlet-name>stockGetLossDetail</servlet-name>  
+   <url-pattern>/stock/loss/detail</url-pattern> 
+   </servlet-mapping>
+   
+   <servlet>  
+      <servlet-name>managerGetOrderDetail</servlet-name>  
+      <servlet-class>manager.GetOrderDetail</servlet-class> 
+  </servlet> 
+  <servlet-mapping>  
+   <servlet-name>managerGetOrderDetail</servlet-name>  
+   <url-pattern>/order/detail</url-pattern> 
+   </servlet-mapping>
+   
+   <servlet>  
+      <servlet-name>accountantDeleteActivity</servlet-name>  
+      <servlet-class>accountant.DeleteActivity</servlet-class> 
+  </servlet> 
+  <servlet-mapping>  
+   <servlet-name>accountantDeleteActivity</servlet-name>  
+   <url-pattern>/good/priceSetting/delete</url-pattern> 
+   </servlet-mapping>
+   
+    <servlet>  
+      <servlet-name>managerDeleteOrder</servlet-name>  
+      <servlet-class>manager.DeleteOrder</servlet-class> 
+  </servlet> 
+  <servlet-mapping>  
+   <servlet-name>managerDeleteOrder</servlet-name>  
+   <url-pattern>/order/delete</url-pattern> 
+   </servlet-mapping>
+   
+    <servlet>  
+      <servlet-name>stockDeleteLoss</servlet-name>  
+      <servlet-class>stock.DeleteLoss</servlet-class> 
+  </servlet> 
+  <servlet-mapping>  
+   <servlet-name>stockDeleteLoss</servlet-name>  
+   <url-pattern>/stock/loss/delete</url-pattern> 
+   </servlet-mapping>
+   
+     <servlet>  
+      <servlet-name>frontGetGoodsInfo</servlet-name>  
+      <servlet-class>front.GetGoodsInfo</servlet-class> 
+  </servlet> 
+  <servlet-mapping>  
+   <servlet-name>frontGetGoodsInfo</servlet-name>  
+   <url-pattern>/good/info</url-pattern> 
    </servlet-mapping>
 </web-app> 
  

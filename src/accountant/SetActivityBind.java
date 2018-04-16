@@ -31,6 +31,8 @@ public class SetActivityBind extends HttpServlet{
 	 protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {  
 		 String input;
 		 JSONObject value;
+		 long time=System.currentTimeMillis();
+		 
 		 int insertResult;//方法变量定义
 		 int autoIncKey=0;
 		String price;
@@ -62,8 +64,8 @@ public class SetActivityBind extends HttpServlet{
 			  
 			
 			if(autoIncKey==0) {
-				   String acountantSetActivity_insert = "INSERT INTO activity(good_id,is_bind,discount_num,good_number)"
-		 	          		+ " value("+value.getInt("goodId")+","+1+","+price+","+value.getInt("num")+")";
+				   String acountantSetActivity_insert = "INSERT INTO activity(good_id,is_bind,discount_num,good_number,create_time)"
+		 	          		+ " value("+value.getInt("goodId")+","+1+","+price+","+value.getInt("num")+","+time+")";
 	    	
 	    		
 			 PreparedStatement stmt1 = (PreparedStatement)conn.prepareStatement(acountantSetActivity_insert,Statement.RETURN_GENERATED_KEYS);   
@@ -81,8 +83,8 @@ public class SetActivityBind extends HttpServlet{
 		    		System.out.println("zhujian:"+autoIncKey);
 		    	}
 		       }else {
-		    	   String acountantSetActivity_insert = "INSERT INTO activity(activity_id,good_id,is_bind,discount_num,good_number)"
-		 	          		+ " value("+autoIncKey+","+value.getInt("goodId")+","+1+","+price+","+value.getInt("num")+")";
+		    	   String acountantSetActivity_insert = "INSERT INTO activity(activity_id,good_id,is_bind,discount_num,good_number,create_time)"
+		 	          		+ " value("+autoIncKey+","+value.getInt("goodId")+","+1+","+price+","+value.getInt("num")+","+time+")";
 		    
 		    	   PreparedStatement stmt1 = conn.prepareStatement(acountantSetActivity_insert);   
 			       

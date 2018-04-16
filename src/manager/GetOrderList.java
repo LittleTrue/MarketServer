@@ -53,7 +53,7 @@ public class GetOrderList extends HttpServlet{
 		 JSONArray ret_obj_array = new JSONArray();
 		 
  
-		 String managerGetGoodsList_query= "SELECT distinct order_id,user_id,worker_id,create_time,total_pay from market.order"+
+		 String managerGetGoodsList_query= "SELECT distinct order_id,a.user_id,user_name,a.worker_id,worker_name,create_time,total_pay from market.order a JOIN worker c ON a.worker_id=c.worker_id JOIN market.user b ON b.user_id=a.user_id"+
 				 " ORDER BY order_id ASC"+" LIMIT "+depage[0]+","+depage[1];
 		    try{
  	

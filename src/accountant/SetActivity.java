@@ -28,7 +28,7 @@ public class SetActivity extends HttpServlet{
 
 	 protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {  
 		 String input;
-		 
+		 long time=System.currentTimeMillis();
 		 int insertResult;//方法变量定义
 		 
 		 
@@ -71,8 +71,8 @@ public class SetActivity extends HttpServlet{
 	    		  ret_obj.put("message", "添加优惠失败");
 	    	}else {
 	    	   
-	       String acountantSetActivity_insert = "INSERT INTO activity(good_id,is_bind,discount_num,good_number)"
-	 	          		+ " value("+goodId+","+0+","+discountPrice+","+goodNum+")";
+	       String acountantSetActivity_insert = "INSERT INTO activity(good_id,is_bind,discount_num,good_number,create_time)"
+	 	          		+ " value("+goodId+","+0+","+discountPrice+","+goodNum+","+time+")";
 	       System.out.println(acountantSetActivity_insert);
 	 	   PreparedStatement stmt2 = conn.prepareStatement(acountantSetActivity_insert);     
 	 	   insertResult= stmt2.executeUpdate();

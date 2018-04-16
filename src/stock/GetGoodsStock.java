@@ -3,6 +3,7 @@ package stock;
 import java.io.BufferedReader;
 import java.io.IOException;  
 import java.io.PrintWriter;
+import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -56,9 +57,9 @@ public class GetGoodsStock  extends HttpServlet {
 		 page = Integer.parseInt(req.getParameter("page"));
 		 size = Integer.parseInt(req.getParameter("size"));////key -value get方式获取url的键值对 
 		 type = req.getParameter("type");
+		 type=URLDecoder.decode(type, "UTF-8");
 		 
-		 
-		 
+		 System.out.println(type);
 		 depage=login.Login.getSplitPageInfo(page,size);
 		 
 		  PrintWriter out=resp.getWriter();   //输出流获取
@@ -75,8 +76,8 @@ public class GetGoodsStock  extends HttpServlet {
 	    	  stockGetGoodsStock_require = "select * from goods "
 	    			 +" ORDER BY good_id ASC"+" LIMIT "+depage[0]+","+depage[1];
 	    	   }else {
-	    	  stockGetGoodsStock_require = "select * from goods WHERE good_divide ="
-	    			 +type+" ORDER BY good_id ASC"+" LIMIT "+depage[0]+","+depage[1];   
+	    	  stockGetGoodsStock_require = "select * from goods WHERE good_divide = '"
+	    			 +type+"' ORDER BY good_id ASC"+" LIMIT "+depage[0]+","+depage[1];   
 	    	   }
 	    	  
 		      PreparedStatement stmt = conn.prepareStatement(stockGetGoodsStock_require); 

@@ -2,6 +2,7 @@ package manager;
 import java.io.BufferedReader;
 import java.io.IOException;  
 import java.io.PrintWriter;
+import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -34,7 +35,8 @@ public class GetGoodsList extends HttpServlet{
 		//输入
 		 int page; 
 		 int size;
-		
+		 String type="";
+		 
 		 conn=login.Login.getCon();
 		 
 		 System.out.println("manager被访问了");
@@ -45,7 +47,9 @@ public class GetGoodsList extends HttpServlet{
 		 page = Integer.parseInt(req.getParameter("page"));////key -value get方式获取url的键值对 
 		 size = Integer.parseInt(req.getParameter("size"));
 		  System.out.println(size);
-		  
+		  type = req.getParameter("type");
+		 type=URLDecoder.decode(type, "UTF-8");
+			 
 		  depage=login.Login.getSplitPageInfo(page,size);
 		  
 		  PrintWriter out=resp.getWriter();   //输出流获取
@@ -53,11 +57,20 @@ public class GetGoodsList extends HttpServlet{
 		 JSONObject ret_obj = new JSONObject();
 		 JSONArray ret_obj_array = new JSONArray();
 		 
- 
-		 String managerGetGoodsList_query= "SELECT * from market.goods"+
-				 " ORDER BY good_id ASC"+" LIMIT "+depage[0]+","+depage[1];
+		 String managerGetGoodsList_query;
+		 
+		  if(type.equals(null)||type=="") {
+    		  
+			  managerGetGoodsList_query= "SELECT * from market.goods"+
+						 " ORDER BY good_id ASC"+" LIMIT "+depage[0]+","+depage[1];
+	    	   }else {
+	    		   
+	    	managerGetGoodsList_query= "select * from goods WHERE good_divide = '"
+	    			 +type+"' ORDER BY good_id ASC"+" LIMIT "+depage[0]+","+depage[1];
+	    	   }
+		
 		    try{
- 	
+		    	
 	        	// 建立查询对象
 	        	PreparedStatement pstm = conn.prepareStatement(managerGetGoodsList_query);
 	        	//执行查询

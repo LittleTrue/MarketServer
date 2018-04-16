@@ -1,0 +1,11 @@
+INSERT INTO `goods` VALUES (1, '曼联拖鞋S21', '双', '生活用品', 100, '曼彻斯特', 203, 2, '好!', 2);
+INSERT INTO `goods` VALUES (2, '时尚球鞋K22', '双', '生活用品', 10, '范哲斯', 235, 0, '好', 8);
+INSERT INTO `goods` VALUES (3, '熊猫小台灯', '个', '生活用品', 2, '腾讯', 0, 2, 'test', 20);
+INSERT INTO `goods` VALUES (4, '联想笔记本电脑I5D2', '台', '办公用品', 5000, '联想', 2, 1, '搜索', 4000);
+INSERT INTO `goods` VALUES (5, '好家风纸巾250抽', '盒', '生活用品', 20, '好家风', 40, 2, '方法', 10);
+INSERT INTO `goods` VALUES (6, '神舟笔记本K610-i5d2', '台', '办公用品', 4000, '神舟', 2, 1, '是是是', 3000);
+INSERT INTO `goods` VALUES (7, '益生素A20ml', '瓶', '非处方药品', 26, '同济药业', 500, 200, '搜索', 21);
+INSERT INTO `goods` VALUES (8, '百乐笔', '支', '办公用品', 4, '晨光', 49, 2, '飒飒瓦', 3);
+INSERT INTO `goods` VALUES (9, '维生素A', '瓶', '非处方药品', 20.5, '同济药业', 25, 4, '爽歪歪', 10);
+INSERT INTO `goods` VALUES (10, '台灯f', '个', '生活用品', 10, '腾讯2', 0, 3, 'test', 20);
+INSERT INTO `goods` VALUES (11, '熊猫音响', '个', '选项1', NULL, 'gxz', 0, 2, 'test', 111);
