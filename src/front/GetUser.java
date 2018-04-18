@@ -32,11 +32,12 @@ public class GetUser extends HttpServlet{
 		 String type;
 		 String target;//输入
 		 
-		 
+		 float discount=0;
 		 String userName;
 		 String userId;//输出
 		 String userSex;
 		 String userPhone;
+		 int userIntegral;
 		 
 		 System.out.println("front被访问了");
 		 
@@ -55,11 +56,11 @@ public class GetUser extends HttpServlet{
 	      conn=login.Login.getCon();
 	      
 	       try {    
-	       String frontGetUser_require = "select user_name,user_id,user_sex,user_phone from user"
+	       String frontGetUser_require = "select user_name,user_id,user_sex,user_phone,user_integral from user"
 	          		+ " where user_phone ='"+target+"' or user_id="+target;
 	       
 	       System.out.println(frontGetUser_require);
-
+ 
 	       PreparedStatement stmt = conn.prepareStatement(frontGetUser_require);     
 	       r= stmt.executeQuery(); 
 	     
@@ -71,11 +72,22 @@ public class GetUser extends HttpServlet{
 	    		userId=r.getString(2);
 	    		userSex=r.getString(3);
 	    		userPhone=r.getString(4);
+	    		userIntegral=r.getInt(4);//折扣规则, 积分为0为9折 , 每提高200积分多打1折,最低7折扣
+	    		
+	    		if(userIntegral>=0 && userIntegral<200) {
+	    			discount=9;
+	    		}else if(userIntegral>=200&&userIntegral<400){
+	    			discount=8;
+	    		}else if(userIntegral>=400) {
+	    			discount=7;
+	    		}
+	    			
 	    		ret_obj_father.put("status",true);
 	    		ret_obj.put("name",userName);  
 	    		ret_obj.put("id",userId);
 	    		ret_obj.put("sex",userSex);
 	    		ret_obj.put("tel",userPhone);
+	    		ret_obj.put("discount",discount);
 	    		ret_obj_father.put("info",ret_obj);
 	          } 
 	       stmt.close();

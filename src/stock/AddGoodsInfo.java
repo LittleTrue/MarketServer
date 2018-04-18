@@ -40,6 +40,7 @@ public class AddGoodsInfo extends HttpServlet{
 		 String supplier;
 		 String warmNum;//输入
 		 String good;
+		 String goodPrice;
 		 
 		 System.out.println("front被访问了");
 		 
@@ -66,7 +67,7 @@ public class AddGoodsInfo extends HttpServlet{
 		 goodName=get_obj.getString("goodName");
 		 supplier=get_obj.getString("supplier");
 		 warmNum=get_obj.getString("warmNum");
-		 
+		 goodPrice=get_obj.getString("goodPrice");
 		 System.out.println(warmNum);
 		 
 		 JSONObject ret_obj = new JSONObject();
@@ -87,8 +88,8 @@ public class AddGoodsInfo extends HttpServlet{
 	    		  ret_obj.put("status", false);
 	    		  ret_obj.put("message", "商品已存在");
 	    	}else {	
-	    		String stockAddGoodsInfo_insert = "insert into market.goods(good_name,good_attr,good_divide,good_supplier,warn_stock,good_describe,instock_price)"
-	    				+ "values ('"+goodName+"','"+goodAttr+"','"+goodDivide+"','"+supplier+"','"+warmNum+"','"+goodDescribe+"','"+cost+"')";
+	    		String stockAddGoodsInfo_insert = "insert into market.goods(good_name,good_attr,good_divide,good_supplier,warn_stock,good_describe,good_price,instock_price)"
+	    				+ "values ('"+goodName+"','"+goodAttr+"','"+goodDivide+"','"+supplier+"','"+warmNum+"','"+goodDescribe+"','"+goodPrice+"','"+cost+"')";
 	    		
 	    		PreparedStatement stmt2 = conn.prepareStatement(stockAddGoodsInfo_insert);     
 	    		insertResult= stmt2.executeUpdate(); 

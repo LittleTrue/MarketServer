@@ -59,10 +59,17 @@ public class GetActivity extends HttpServlet{
 			 accountantGetActivity_require ="select distinct activity_id,is_bind,create_time,discount_num as discount from activity"
 				       +" ORDER BY create_time DESC"+" LIMIT "+depage[0]+","+depage[1];
 			 		
-		
+			String accountantGetActivity_require_count ="select count(distinct activity_id) from activity"
+				       +" ORDER BY create_time DESC";
 	       System.out.println(accountantGetActivity_require);
-	       PreparedStatement stmt = conn.prepareStatement(accountantGetActivity_require);   
+	       PreparedStatement stmt = conn.prepareStatement(accountantGetActivity_require_count);   
 	       
+	       r= stmt.executeQuery(); 
+	       
+	       r.next();
+	       total=r.getInt(1);
+	       
+	       stmt = conn.prepareStatement(accountantGetActivity_require);
 	       r= stmt.executeQuery(); 
 	       
 	       ret_obj_array =login.Login.resultSetToJsonArry(r);
@@ -74,9 +81,6 @@ public class GetActivity extends HttpServlet{
        			ret_obj.put("info","");
        			ret_obj.put("total",0);
 	    	}else {
-	    		r.last();// 移动到最后  	    		
-	    		total=r.getRow();// 获得结果集长度  
-	    		
         		ret_obj.put("status",true);
         		ret_obj.put("info",ret_obj_array);
         		ret_obj.put("total",total);

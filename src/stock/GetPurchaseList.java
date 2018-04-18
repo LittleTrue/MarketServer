@@ -53,28 +53,40 @@ public class GetPurchaseList extends HttpServlet{
 		
 		 JSONObject ret_obj = new JSONObject();
 		 JSONArray ret_obj_array = new JSONArray();
-		 
+		 String stockGetPurchaseList_require_count="";
 		 try { 
 			 System.out.println(type);
 			 switch(type){
 			 case "all" : stockGetPurchaseList_require ="select distinct purchase_id,purchase_status,create_time,importance from purchase"
 				       +" ORDER BY create_time DESC"+" LIMIT "+depage[0]+","+depage[1];
+			 stockGetPurchaseList_require_count="select count(distinct purchase_id) from purchase"
+				       +" ORDER BY create_time DESC";
 			 			break;
 				 
 			 case "done" : stockGetPurchaseList_require ="select distinct purchase_id,purchase_status,create_time,importance from purchase"
 				       +" WHERE purchase_status = 1"+" ORDER BY create_time DESC"+" LIMIT "+depage[0]+","+depage[1];
+			 stockGetPurchaseList_require_count="select count(distinct purchase_id) from purchase"
+				       +" WHERE purchase_status = 1"+" ORDER BY create_time DESC";
 			 			break;
 			 			
-			 case "not" : stockGetPurchaseList_require ="select distinct purchase_id,purchase_status,create_time,importance from purchase"
+			 case "not" :  stockGetPurchaseList_require ="select distinct purchase_id,purchase_status,create_time,importance from purchase"
 				       +" WHERE purchase_status = 0"+" ORDER BY create_time DESC"+" LIMIT "+depage[0]+","+depage[1];
+			 stockGetPurchaseList_require_count="select count(distinct purchase_id) from purchase"
+				       +" WHERE purchase_status = 0"+" ORDER BY create_time DESC";
 			 			break;
 			 }
 			 
 	       System.out.println(stockGetPurchaseList_require);
-	       PreparedStatement stmt = conn.prepareStatement(stockGetPurchaseList_require);   
+	       
+	       PreparedStatement stmt = conn.prepareStatement(stockGetPurchaseList_require_count);   
 	       
 	       r= stmt.executeQuery(); 
-	       
+	       r.next();
+	       total=r.getInt(1);
+      	 
+	       stmt = conn.prepareStatement(stockGetPurchaseList_require);
+	       r = stmt.executeQuery();
+      	 
 	       ret_obj_array =login.Login.resultSetToJsonArry(r);
        	
 	       r.beforeFirst();// 返回第一个（记住不是rs.frist()）,不写的话下面的循环里面没值 
@@ -84,8 +96,6 @@ public class GetPurchaseList extends HttpServlet{
        			ret_obj.put("info","");
        			ret_obj.put("total",0);
 	    	}else {
-	    		r.last();// 移动到最后  	    		
-	    		total=r.getRow();// 获得结果集长度  
 	    		
         		ret_obj.put("status",true);
         		ret_obj.put("info",ret_obj_array);

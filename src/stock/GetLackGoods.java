@@ -54,11 +54,21 @@ public class GetLackGoods extends HttpServlet {
 		  
 		 String stockGetLackGoods_query = "SELECT * FROM market.goods where good_stock<=warn_stock"+
 				 " ORDER BY good_id ASC"+" LIMIT "+depage[0]+","+depage[1];
+		 
+		 String stockGetLackGoods_query_count = "SELECT count(*) FROM market.goods where good_stock<=warn_stock"+
+				 " ORDER BY good_id ASC";
 		    try{
 	        	// 建立查询对象
-	        	PreparedStatement pstm = conn.prepareStatement(stockGetLackGoods_query);
+	        	PreparedStatement pstm = conn.prepareStatement(stockGetLackGoods_query_count);
 	        	//执行查询
 	        	 r = pstm.executeQuery();
+	        	 r.next();
+	        	 total=r.getInt(1);
+	        	 
+	        	 pstm = conn.prepareStatement(stockGetLackGoods_query);
+	        	 
+	        	 r = pstm.executeQuery();
+	        	 
 	        	ret_obj_array =login.Login.resultSetToJsonArry(r);
 	        	
 	        	r.beforeFirst();// 返回第一个（记住不是rs.frist()）,不写的话下面的循环里面没值  
@@ -69,9 +79,7 @@ public class GetLackGoods extends HttpServlet {
 	        		ret_obj.put("total",0);
 	        	}
 	        	else {
-	        		r.last();// 移动到最后  	    		
-		    		total=r.getRow();// 获得结果集长度  
-		    		
+	        
 	        		ret_obj.put("status",true);
 	        		ret_obj.put("info",ret_obj_array);
 	        		ret_obj.put("total",total);

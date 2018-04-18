@@ -312,7 +312,7 @@ id="WebApp_ID" version="3.0">
   </servlet> 
   <servlet-mapping>  
    <servlet-name>stockGetLackGoods</servlet-name>  
-   <url-pattern>/good/lack/list</url-pattern> 
+   <url-pattern>/stock/lack/list</url-pattern> 
    </servlet-mapping>
    
     <servlet>  
@@ -405,6 +405,43 @@ id="WebApp_ID" version="3.0">
    <servlet-name>frontGetGoodsInfo</servlet-name>  
    <url-pattern>/good/info</url-pattern> 
    </servlet-mapping>
+   
+   <servlet>  
+      <servlet-name>managerGetProfitInfo</servlet-name>  
+      <servlet-class>manager.GetProfitInfo</servlet-class> 
+  </servlet> 
+  <servlet-mapping>  
+   <servlet-name>managerGetProfitInfo</servlet-name>  
+   <url-pattern>/admin/statistics/sale</url-pattern> 
+   </servlet-mapping>
+   
+    <servlet>  
+      <servlet-name>stockDeleteGoods</servlet-name>  
+      <servlet-class>stock.DeleteGoods</servlet-class> 
+  </servlet> 
+  <servlet-mapping>  
+   <servlet-name>stockDeleteGoods</servlet-name>  
+   <url-pattern>/good/delete</url-pattern> 
+   </servlet-mapping>
+   
+    <servlet>  
+      <servlet-name>managerGetSellStatus</servlet-name>  
+      <servlet-class>manager.GetSellStatus</servlet-class> 
+  </servlet> 
+  <servlet-mapping>  
+   <servlet-name>managerGetSellStatus</servlet-name>  
+   <url-pattern>/good/sale</url-pattern> 
+   </servlet-mapping>
+   
+	 <servlet>  
+      <servlet-name>managerGetTopGoods</servlet-name>  
+      <servlet-class>manager.GetTopGoods</servlet-class> 
+  </servlet> 
+  <servlet-mapping>  
+   <servlet-name>managerGetTopGoods</servlet-name>  
+   <url-pattern>/admin/statistics/good</url-pattern> 
+   </servlet-mapping>
+   
 </web-app> 
  
   

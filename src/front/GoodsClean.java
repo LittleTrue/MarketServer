@@ -1,6 +1,7 @@
 package front;
 
 import java.sql.Statement;
+import java.time.LocalDateTime;
 import java.io.BufferedReader;
 import java.io.IOException;  
 import java.io.PrintWriter;
@@ -42,7 +43,11 @@ public class GoodsClean extends HttpServlet{
 		 float activity_price;
 		 PreparedStatement stmt1;
 		 PreparedStatement stmt2; 
-		 long time =System.currentTimeMillis();
+		 
+		 
+		 LocalDateTime localtime=LocalDateTime.now();
+		
+		 String time=localtime.toString();
 		 int userIntegral=0;
 		 int newuserIntegral = 0;
 		 

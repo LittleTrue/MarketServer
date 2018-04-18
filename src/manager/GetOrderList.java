@@ -54,12 +54,22 @@ public class GetOrderList extends HttpServlet{
 		 
  
 		 String managerGetGoodsList_query= "SELECT distinct order_id,a.user_id,user_name,a.worker_id,worker_name,create_time,total_pay from market.order a JOIN worker c ON a.worker_id=c.worker_id JOIN market.user b ON b.user_id=a.user_id"+
-				 " ORDER BY order_id ASC"+" LIMIT "+depage[0]+","+depage[1];
-		    try{
+				 " ORDER BY order_id DESC"+" LIMIT "+depage[0]+","+depage[1];
+		 
+		 String managerGetGoodsList_query_count= "SELECT count(distinct order_id) from market.order a JOIN worker c ON a.worker_id=c.worker_id JOIN market.user b ON b.user_id=a.user_id"+
+				 " ORDER BY order_id DESC";
+		 
+		   System.out.println(managerGetGoodsList_query);
+		 try{
  	
 	        	// 建立查询对象
-	        	PreparedStatement pstm = conn.prepareStatement(managerGetGoodsList_query);
+	        	PreparedStatement pstm = conn.prepareStatement(managerGetGoodsList_query_count);
 	        	//执行查询
+	        	 r = pstm.executeQuery();
+	        	 r.next();
+	        	 total=r.getInt(1);
+	        	 
+	        	 pstm = conn.prepareStatement(managerGetGoodsList_query);
 	        	 r = pstm.executeQuery();
 	        	ret_obj_array =login.Login.resultSetToJsonArry(r);
 	        	
@@ -71,9 +81,7 @@ public class GetOrderList extends HttpServlet{
 	        		ret_obj.put("total",0);
 	        	}
 	        	else {
-	        		r.last();// 移动到最后  	    		
-		    		total=r.getRow();// 获得结果集长度  
-		    		
+	        		
 	        		
 	        		ret_obj.put("info",ret_obj_array);
 	        		ret_obj.put("total",total);

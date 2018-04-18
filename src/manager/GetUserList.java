@@ -58,12 +58,20 @@ public class GetUserList extends HttpServlet{
   
 		 String managerGetUserList_query= "SELECT * from market.user"+
 				 " ORDER BY regist_time DESC"+" LIMIT "+depage[0]+","+depage[1];
+		 String managerGetUserList_query_count= "SELECT count(*)from market.user"+
+				 " ORDER BY regist_time DESC";
 		    try{
   	
 	        	// 建立查询对象
-	        	PreparedStatement pstm = conn.prepareStatement(managerGetUserList_query);
+	        	PreparedStatement pstm = conn.prepareStatement(managerGetUserList_query_count);
 	        	//执行查询
 	        	 r = pstm.executeQuery();
+	        	 r.next();
+	        	 total=r.getInt(1);
+	        	 
+	        	 pstm = conn.prepareStatement(managerGetUserList_query);
+	        	 r = pstm.executeQuery();
+	        	 
 	        	ret_obj_array =login.Login.resultSetToJsonArry(r);
 	        	
 	        	r.beforeFirst();// 返回第一个（记住不是rs.frist()）,不写的话下面的循环里面没值  
@@ -74,9 +82,7 @@ public class GetUserList extends HttpServlet{
 	        		ret_obj.put("total",0);
 	        	}
 	        	else {
-	        		r.last();// 移动到最后  	    		
-		    		total=r.getRow();// 获得结果集长度  
-		    		
+	
 	        		ret_obj.put("status",true);
 	        		ret_obj.put("info",ret_obj_array);
 	        		ret_obj.put("total",total);

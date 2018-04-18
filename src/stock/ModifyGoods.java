@@ -30,6 +30,7 @@ public class ModifyGoods extends HttpServlet{
 		 int modifyResult;//方法变量定义
 		 String input;
 		 int flag=0;
+		 int insertResult;
 		 
 		 String goodDescribe;
 		 String goodAttr;
@@ -41,7 +42,7 @@ public class ModifyGoods extends HttpServlet{
 		 String good;
 		 String goodId;
 		 String goodStock;
-		 
+		String  goodPrice;
 	 
 	 conn=login.Login.getCon();
 	 
@@ -68,7 +69,7 @@ public class ModifyGoods extends HttpServlet{
 	 goodAttr=get_obj.getString("good_attr");
 	 goodDescribe=get_obj.getString("good_describe");
 	 goodStock=get_obj.getString("good_stock");
-	
+	 goodPrice=get_obj.getString("good_price");
 	 JSONObject ret_obj = new JSONObject();
 	 
 	 String sqlupdate="UPDATE goods SET ";
@@ -79,6 +80,28 @@ public class ModifyGoods extends HttpServlet{
   	  { sqlupdate=sqlupdate+"warn_stock='"+warmNum+"'";
   	   flag=1;}
      }
+     
+     if(!goodPrice.equals("")){
+    	   if(flag==0)
+        	{ sqlupdate=sqlupdate+"good_price='"+goodPrice+"'";
+        	   flag=1;}
+    	   else {
+    		   sqlupdate=sqlupdate+","+"good_price='"+goodPrice+"'"; 
+    	   }
+    	   
+    	   String accountantSetGoodPrice_insert = "INSERT INTO market.price(good_id,good_price,create_time)"
+     				 + "  values ("+goodId+","+goodPrice+","+System.currentTimeMillis()+")";
+     			
+				try {
+					PreparedStatement stmt2 = conn.prepareStatement(accountantSetGoodPrice_insert);
+					insertResult= stmt2.executeUpdate(); 
+					
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}	
+     		
+       }
      
      if(!supplier.equals("")){
   	   if(flag==0)

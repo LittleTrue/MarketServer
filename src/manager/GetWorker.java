@@ -59,11 +59,19 @@ public class GetWorker extends HttpServlet  {
   
 		 String sql = "SELECT worker_id as no,worker_name as name,worker_sex as sex,worker_position as job,worker_phone as tel FROM worker where worker_position <>'manager'"+
 				 " ORDER BY worker_id ASC"+" LIMIT "+depage[0]+","+depage[1];
+		 String sql_count = "SELECT count(*) FROM worker where worker_position <>'manager'"+
+				 " ORDER BY worker_id ASC";
 		    try{
 	        	// 建立查询对象
-	        	PreparedStatement pstm = conn.prepareStatement(sql);
+	        	PreparedStatement pstm = conn.prepareStatement(sql_count);
 	        	//执行查询
 	        	 r = pstm.executeQuery();
+	        	 r.next();
+	        	 total=r.getInt(1);
+	        	 
+	        	 pstm = conn.prepareStatement(sql);
+	        	 r = pstm.executeQuery();
+	        	 
 	        	ret_obj_array =login.Login.resultSetToJsonArry(r);
 	        	
 	        	r.beforeFirst();// 返回第一个（记住不是rs.frist()）,不写的话下面的循环里面没值  
@@ -74,9 +82,7 @@ public class GetWorker extends HttpServlet  {
 	        		ret_obj.put("total",0);
 	        	}
 	        	else {
-	        		r.last();// 移动到最后  	    		
-		    		total=r.getRow();// 获得结果集长度  
-		    		
+
 	        		ret_obj.put("status",true);
 	        		ret_obj.put("info",ret_obj_array);
 	        		ret_obj.put("total",total);

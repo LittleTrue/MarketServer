@@ -25,7 +25,8 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONException;
 
 public class GetGoodsList extends HttpServlet{
-	private ResultSet r;
+	private ResultSet r1;
+	private ResultSet r2;
 	private static Connection conn = null;
 	
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException { 
@@ -58,36 +59,43 @@ public class GetGoodsList extends HttpServlet{
 		 JSONArray ret_obj_array = new JSONArray();
 		 
 		 String managerGetGoodsList_query;
-		 
-		  if(type.equals(null)||type=="") {
+		 String managerGetGoodsList_query_count;
+		  if(type.equals(null)||type==""||type.equals("全部")) {
     		  
 			  managerGetGoodsList_query= "SELECT * from market.goods"+
 						 " ORDER BY good_id ASC"+" LIMIT "+depage[0]+","+depage[1];
+			  
+			  managerGetGoodsList_query_count="SELECT count(*) from market.goods";
+			  
 	    	   }else {
 	    		   
 	    	managerGetGoodsList_query= "select * from goods WHERE good_divide = '"
 	    			 +type+"' ORDER BY good_id ASC"+" LIMIT "+depage[0]+","+depage[1];
+	    	
+	    	managerGetGoodsList_query_count="SELECT count(*) from market.goods WHERE good_divide ='"+type+"'";
 	    	   }
-		
+	
 		    try{
 		    	
 	        	// 建立查询对象
 	        	PreparedStatement pstm = conn.prepareStatement(managerGetGoodsList_query);
+	        	PreparedStatement pstm1 = conn.prepareStatement(managerGetGoodsList_query_count);
 	        	//执行查询
-	        	 r = pstm.executeQuery();
-	        	ret_obj_array =login.Login.resultSetToJsonArry(r);
+	        	 r1 = pstm.executeQuery();
+	        	 
+	        	 r2 = pstm1.executeQuery();
+	        	 r2.next();
+	        	ret_obj_array =login.Login.resultSetToJsonArry(r1);
 	        	
-	        	r.beforeFirst();// 返回第一个（记住不是rs.frist()）,不写的话下面的循环里面没值  
+	        	r1.beforeFirst();// 返回第一个（记住不是rs.frist()）,不写的话下面的循环里面没值  
 	        	
-	        	if(!r.next()) {
+	        	if(!r1.next()) {
 	        		ret_obj.put("status",true);
 	        		ret_obj.put("goods","");
 	        		ret_obj.put("total",0);
 	        	}
 	        	else {
-	        		r.last();// 移动到最后  	    		
-		    		total=r.getRow();// 获得结果集长度  
-		    		
+	        		total=r2.getInt(1);
 	        		
 	        		ret_obj.put("goods",ret_obj_array);
 	        		ret_obj.put("total",total);
