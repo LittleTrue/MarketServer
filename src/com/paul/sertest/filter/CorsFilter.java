@@ -80,7 +80,7 @@ public class CorsFilter implements Filter {
 		
 		if (checkResult.isSuccess()) {
 			conn=login.Login.getCon();
-			
+			System.out.println("连接成功");
 			try {
 				get_obj = JSONObject.fromString(TokenMgr.parseJWT(token).getSubject());
 			

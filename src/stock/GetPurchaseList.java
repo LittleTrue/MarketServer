@@ -57,19 +57,19 @@ public class GetPurchaseList extends HttpServlet{
 		 try { 
 			 System.out.println(type);
 			 switch(type){
-			 case "all" : stockGetPurchaseList_require ="select distinct purchase_id,purchase_status,create_time,importance from purchase"
+			 case "all" : stockGetPurchaseList_require ="select distinct purchase_id,purchase_status,purchase_note as name,create_time,importance from purchase"
 				       +" ORDER BY create_time DESC"+" LIMIT "+depage[0]+","+depage[1];
 			 stockGetPurchaseList_require_count="select count(distinct purchase_id) from purchase"
 				       +" ORDER BY create_time DESC";
 			 			break;
 				 
-			 case "done" : stockGetPurchaseList_require ="select distinct purchase_id,purchase_status,create_time,importance from purchase"
+			 case "done" : stockGetPurchaseList_require ="select distinct purchase_id,purchase_status,purchase_note as name,create_time,importance from purchase"
 				       +" WHERE purchase_status = 1"+" ORDER BY create_time DESC"+" LIMIT "+depage[0]+","+depage[1];
 			 stockGetPurchaseList_require_count="select count(distinct purchase_id) from purchase"
 				       +" WHERE purchase_status = 1"+" ORDER BY create_time DESC";
 			 			break;
 			 			
-			 case "not" :  stockGetPurchaseList_require ="select distinct purchase_id,purchase_status,create_time,importance from purchase"
+			 case "not" :  stockGetPurchaseList_require ="select distinct purchase_id,purchase_status,purchase_note as name,create_time,importance from purchase"
 				       +" WHERE purchase_status = 0"+" ORDER BY create_time DESC"+" LIMIT "+depage[0]+","+depage[1];
 			 stockGetPurchaseList_require_count="select count(distinct purchase_id) from purchase"
 				       +" WHERE purchase_status = 0"+" ORDER BY create_time DESC";

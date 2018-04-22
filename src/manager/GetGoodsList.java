@@ -32,7 +32,7 @@ public class GetGoodsList extends HttpServlet{
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException { 
 		 int total=0;//方法变量定义
 	     int depage[]= {0,1};
-		 
+		 String target;
 		//输入
 		 int page; 
 		 int size;
@@ -51,6 +51,11 @@ public class GetGoodsList extends HttpServlet{
 		  type = req.getParameter("type");
 		 type=URLDecoder.decode(type, "UTF-8");
 			 
+		 target = req.getParameter("target");
+		 if(!target.equals("")) {
+		 target = URLDecoder.decode(target,"UTF-8");
+		 }
+		 
 		  depage=login.Login.getSplitPageInfo(page,size);
 		  
 		  PrintWriter out=resp.getWriter();   //输出流获取
@@ -61,20 +66,32 @@ public class GetGoodsList extends HttpServlet{
 		 String managerGetGoodsList_query;
 		 String managerGetGoodsList_query_count;
 		  if(type.equals(null)||type==""||type.equals("全部")) {
-    		  
-			  managerGetGoodsList_query= "SELECT * from market.goods"+
+    		  if(!target.equals("")) {
+			  managerGetGoodsList_query= "SELECT * from market.goods WHERE good_name LIKE '%"+target+"%'"+
 						 " ORDER BY good_id ASC"+" LIMIT "+depage[0]+","+depage[1];
 			  
-			  managerGetGoodsList_query_count="SELECT count(*) from market.goods";
-			  
+			  managerGetGoodsList_query_count="SELECT count(*) from market.goods WHERE good_name LIKE '%"+target+"%'";
+    		  }else {
+    			 managerGetGoodsList_query= "SELECT * from market.goods "+
+ 						 " ORDER BY good_id ASC"+" LIMIT "+depage[0]+","+depage[1];
+ 			  
+ 			  managerGetGoodsList_query_count="SELECT count(*) from market.goods";
+    		  }
 	    	   }else {
-	    		   
+	    		   if(!target.equals("")) {   
 	    	managerGetGoodsList_query= "select * from goods WHERE good_divide = '"
-	    			 +type+"' ORDER BY good_id ASC"+" LIMIT "+depage[0]+","+depage[1];
+	    			 +type+"' AND  good_name LIKE '%"+target+"%' ORDER BY good_id ASC"+" LIMIT "+depage[0]+","+depage[1];
 	    	
-	    	managerGetGoodsList_query_count="SELECT count(*) from market.goods WHERE good_divide ='"+type+"'";
+	    	managerGetGoodsList_query_count="SELECT count(*) from market.goods WHERE good_divide ='"+type+"' AND  good_name LIKE '%"+target+"%'";
+	    	   }else {
+	    		   managerGetGoodsList_query= "select * from goods WHERE good_divide = '"
+	  	    			 +type+"'  ORDER BY good_id ASC"+" LIMIT "+depage[0]+","+depage[1];
+	  	    	
+	  	    	managerGetGoodsList_query_count="SELECT count(*) from market.goods WHERE good_divide ='"+type+"'"; 		   
 	    	   }
-	
+	    	   }
+		  System.out.println( managerGetGoodsList_query);
+    
 		    try{
 		    	
 	        	// 建立查询对象

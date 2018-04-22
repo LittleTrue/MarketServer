@@ -2,6 +2,7 @@ package accountant;
 import java.io.BufferedReader;
 import java.io.IOException;  
 import java.io.PrintWriter;
+import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -36,6 +37,7 @@ public class SetActivityBind extends HttpServlet{
 		 int insertResult;//方法变量定义
 		 int autoIncKey=0;
 		String price;
+		 String name;
 		 
 		 String goods;//输入
 		 System.out.println("acountant被访问了");
@@ -54,7 +56,10 @@ public class SetActivityBind extends HttpServlet{
 		 goods=get_obj.getString("goodsList");
 		 price=get_obj.getString("discount");
 		 JSONObject ret_obj = new JSONObject();
-		 
+		 name=get_obj.getString("name");
+//		 if(!name.equals("")) {
+//			 name = URLDecoder.decode(name,"UTF-8");
+//			 }
 		 JSONArray get_obj_array=JSONArray.fromObject(goods);//需要对改数组再进行一次json数组的转码
 		 try { 
 			 conn=login.Login.getCon();
@@ -64,8 +69,8 @@ public class SetActivityBind extends HttpServlet{
 			  
 			
 			if(autoIncKey==0) {
-				   String acountantSetActivity_insert = "INSERT INTO activity(good_id,is_bind,discount_num,good_number,create_time)"
-		 	          		+ " value("+value.getInt("goodId")+","+1+","+price+","+value.getInt("num")+","+time+")";
+				   String acountantSetActivity_insert = "INSERT INTO activity(good_id,is_bind,discount_num,good_number,create_time,name)"
+		 	          		+ " value("+value.getInt("goodId")+","+1+","+price+","+value.getInt("num")+","+time+",'"+name+"')";
 	    	
 	    		
 			 PreparedStatement stmt1 = (PreparedStatement)conn.prepareStatement(acountantSetActivity_insert,Statement.RETURN_GENERATED_KEYS);   
@@ -83,8 +88,8 @@ public class SetActivityBind extends HttpServlet{
 		    		System.out.println("zhujian:"+autoIncKey);
 		    	}
 		       }else {
-		    	   String acountantSetActivity_insert = "INSERT INTO activity(activity_id,good_id,is_bind,discount_num,good_number,create_time)"
-		 	          		+ " value("+autoIncKey+","+value.getInt("goodId")+","+1+","+price+","+value.getInt("num")+","+time+")";
+		    	   String acountantSetActivity_insert = "INSERT INTO activity(activity_id,good_id,is_bind,discount_num,good_number,create_time,name)"
+		 	          		+ " value("+autoIncKey+","+value.getInt("goodId")+","+1+","+price+","+value.getInt("num")+","+time+","+name+")";
 		    
 		    	   PreparedStatement stmt1 = conn.prepareStatement(acountantSetActivity_insert);   
 			       

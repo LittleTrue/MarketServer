@@ -56,7 +56,7 @@ public class GetActivity extends HttpServlet{
 		 try { 
 			 
 			
-			 accountantGetActivity_require ="select distinct activity_id,is_bind,create_time,discount_num as discount from activity"
+			 accountantGetActivity_require ="select distinct activity_id,is_bind,name,create_time,discount_num as discount from activity"
 				       +" ORDER BY create_time DESC"+" LIMIT "+depage[0]+","+depage[1];
 			 		
 			String accountantGetActivity_require_count ="select count(distinct activity_id) from activity"

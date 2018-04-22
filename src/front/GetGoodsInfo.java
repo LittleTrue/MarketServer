@@ -59,7 +59,7 @@ public class GetGoodsInfo extends HttpServlet {
 		 
 		 
 	       try {    
-	       String frontAddGoods_require = "select good_price,good_id,good_name from goods"
+	       String frontAddGoods_require = "select good_price,good_id,good_name,good_stock from goods"
 	          		+ " where good_id ='"+goodId+"'";
 	       PreparedStatement stmt = conn.prepareStatement(frontAddGoods_require);     
 	       r= stmt.executeQuery(); 
@@ -72,11 +72,12 @@ public class GetGoodsInfo extends HttpServlet {
 	    		good_price=r.getString(1);
 	    	    good_id=r.getString(2);
 	    	    good_name=r.getString(3);
-	    	  
+	    	    String good_stock = r.getString(4);
 	    		
 	    		ret_obj.put("good_price",good_price);  
 	    		ret_obj.put("good_name",good_name);
 	    		ret_obj.put("good_id",good_id);
+	    		ret_obj.put("good_stock",good_stock);
 	    		ret_obj_father.put("status",true);
 	    		ret_obj_father.put("info",ret_obj);
 	          }

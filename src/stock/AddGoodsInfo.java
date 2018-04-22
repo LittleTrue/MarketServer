@@ -90,7 +90,7 @@ public class AddGoodsInfo extends HttpServlet{
 	    	}else {	
 	    		String stockAddGoodsInfo_insert = "insert into market.goods(good_name,good_attr,good_divide,good_supplier,warn_stock,good_describe,good_price,instock_price)"
 	    				+ "values ('"+goodName+"','"+goodAttr+"','"+goodDivide+"','"+supplier+"','"+warmNum+"','"+goodDescribe+"','"+goodPrice+"','"+cost+"')";
-	    		
+	    		System.out.println(stockAddGoodsInfo_insert);
 	    		PreparedStatement stmt2 = conn.prepareStatement(stockAddGoodsInfo_insert);     
 	    		insertResult= stmt2.executeUpdate(); 
 	    		 if (insertResult==0) {  	  

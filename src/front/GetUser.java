@@ -44,7 +44,7 @@ public class GetUser extends HttpServlet{
 		 req.setCharacterEncoding("utf-8");
 		 resp.setCharacterEncoding("utf-8"); 
 
-		 type = req.getParameter("type");////key -value get方式获取url的键值对 
+		 //type = req.getParameter("type");////key -value get方式获取url的键值对 
 		 target = req.getParameter("target");
 		 
 		 System.out.println(target);
@@ -72,7 +72,7 @@ public class GetUser extends HttpServlet{
 	    		userId=r.getString(2);
 	    		userSex=r.getString(3);
 	    		userPhone=r.getString(4);
-	    		userIntegral=r.getInt(4);//折扣规则, 积分为0为9折 , 每提高200积分多打1折,最低7折扣
+	    		userIntegral=r.getInt(5);//折扣规则, 积分为0为9折 , 每提高200积分多打1折,最低7折扣
 	    		
 	    		if(userIntegral>=0 && userIntegral<200) {
 	    			discount=9;
@@ -87,7 +87,7 @@ public class GetUser extends HttpServlet{
 	    		ret_obj.put("id",userId);
 	    		ret_obj.put("sex",userSex);
 	    		ret_obj.put("tel",userPhone);
-	    		ret_obj.put("discount",discount);
+	    		ret_obj.put("rebate",discount);
 	    		ret_obj_father.put("info",ret_obj);
 	          } 
 	       stmt.close();

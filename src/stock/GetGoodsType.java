@@ -50,9 +50,7 @@ public class GetGoodsType extends HttpServlet {
 	          		
 	       PreparedStatement stmt = conn.prepareStatement(stockGetGoodsType_require);     
 	       r= stmt.executeQuery(); 
-	     
-	       	r= stmt.executeQuery(); 
-	       
+   
 	       ret_obj_array =login.Login.resultSetToJsonArry(r);
        	
 	       r.beforeFirst();// 返回第一个（记住不是rs.frist()）,不写的话下面的循环里面没值 

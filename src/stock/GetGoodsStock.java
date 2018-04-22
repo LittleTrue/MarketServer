@@ -36,7 +36,7 @@ public class GetGoodsStock  extends HttpServlet {
 	 protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException { 
 		 //方法变量定义
 		 int depage[]= {0,1};
-	
+		 String target;
 	
 		 
 		 int page;//输入 
@@ -57,6 +57,9 @@ public class GetGoodsStock  extends HttpServlet {
 		 page = Integer.parseInt(req.getParameter("page"));
 		 size = Integer.parseInt(req.getParameter("size"));////key -value get方式获取url的键值对 
 		 type = req.getParameter("type");
+		 
+		 
+		
 		 type=URLDecoder.decode(type, "UTF-8");
 		 
 		 System.out.println(type);
@@ -69,22 +72,26 @@ public class GetGoodsStock  extends HttpServlet {
 		 JSONArray ret_obj_array = new JSONArray();
 	
 	       try {   
-	    	   String stockGetGoodsStock_require_count;
+	    	   
+	    	  String stockGetGoodsStock_require_count;
 	    	  String stockGetGoodsStock_require;
+	    	  
 	    	  if(type.equals(null)||type==""||type.equals("全部")) {
 	    		  
 	    	  stockGetGoodsStock_require = "select * from goods "
-	    			 +" ORDER BY good_id ASC"+" LIMIT "+depage[0]+","+depage[1];
+	    			 +" ORDER BY good_stock DESC"+" LIMIT "+depage[0]+","+depage[1];
 	    	  
-	    	  stockGetGoodsStock_require_count = "select count(*) from goods "
-		    			 +" ORDER BY good_id ASC";
+	    	  stockGetGoodsStock_require_count = "select count(*) from goods"
+		    			 +" ORDER BY good_stock DESC";
 	    	   }else {
 	    	  stockGetGoodsStock_require = "select * from goods WHERE good_divide = '"
-	    			 +type+"' ORDER BY good_id ASC"+" LIMIT "+depage[0]+","+depage[1];   
+	    			 +type+"' ORDER BY good_stock DESC"+" LIMIT "+depage[0]+","+depage[1];   
 	    	  
 	    	  stockGetGoodsStock_require_count = "select count(*) from goods WHERE good_divide = '"
-		    			 +type+"' ORDER BY good_id ASC"; 
+		    			 +type+"' ORDER BY good_stock DESC"; 
 	    	   }
+	    	  
+	    	 
 	    	  
 		      PreparedStatement stmt = conn.prepareStatement(stockGetGoodsStock_require_count); 
 		      

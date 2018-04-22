@@ -56,8 +56,10 @@ public class GetSellStatus extends HttpServlet{
 	       try {    
 	       String managerGetGoodsPrice_require = "select good_number,create_time from market.order"
 	    		   + " where good_id ="+goodId +" ORDER BY create_time ASC"; 
+	       
 	       System.out.println(managerGetGoodsPrice_require);
-	       PreparedStatement stmt = conn.prepareStatement(managerGetGoodsPrice_require);     
+	       PreparedStatement stmt = conn.prepareStatement(managerGetGoodsPrice_require); 
+	       
 	       r= stmt.executeQuery(); 
 
 	       if (!r.next()) {  	  

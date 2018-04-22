@@ -36,7 +36,7 @@ public class AddPurchase extends HttpServlet{
 		 PreparedStatement stmt2; 
 		 String goodName;
 		 long time=System.currentTimeMillis();
-		 
+		 String name;
 		 int autoIncKey=0;
 		 int insertResult;//方法变量定义
 		 
@@ -60,7 +60,7 @@ public class AddPurchase extends HttpServlet{
 		 
 		 goods=get_obj.getString("goods");
 		 importance=get_obj.getString("importance");
-		 note=get_obj.getString("note");
+		 name=get_obj.getString("name");
 		 
 		 System.out.println(goods);
 		 
@@ -90,7 +90,7 @@ public class AddPurchase extends HttpServlet{
 				    		if(autoIncKey==0) {
 				    			
 				    		String managerAddPurchase_insert = "insert into purchase(good_id,good_name,purchase_number,purchase_note,purchase_status,importance,create_time)"
-					          		+ "values ('"+value.getInt("goodId")+"','"+goodName+"','"+value.getInt("purchaseNum")+"','"+note+"','"+0+"','"+importance+"','"+time+"')";
+					          		+ "values ('"+value.getInt("goodId")+"','"+goodName+"','"+value.getInt("purchaseNum")+"','"+name+"','"+0+"','"+importance+"','"+time+"')";
 				    	
 				    		
 					       stmt2 = (PreparedStatement)conn.prepareStatement(managerAddPurchase_insert,Statement.RETURN_GENERATED_KEYS);   
@@ -109,7 +109,7 @@ public class AddPurchase extends HttpServlet{
 					    	}
 					       }else {
 					    	   String managerAddPurchase_insert = "insert into purchase(purchase_id,good_id,good_name,purchase_number,purchase_note,purchase_status,importance,create_time)"
-						          		+ "values ('"+autoIncKey+"','"+value.getInt("goodId")+"','"+goodName+"','"+value.getInt("purchaseNum")+"','"+note+"','"+0+"','"+importance+"','"+time+"')";
+						          		+ "values ('"+autoIncKey+"','"+value.getInt("goodId")+"','"+goodName+"','"+value.getInt("purchaseNum")+"','"+name+"','"+0+"','"+importance+"','"+time+"')";
 					    	
 						        stmt2 = conn.prepareStatement(managerAddPurchase_insert);   
 						       

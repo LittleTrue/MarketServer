@@ -46,6 +46,7 @@ public class GetProfitInfo extends HttpServlet{
 		 LocalDate prevWeek0 = LocalDate.now();
 		 int flag=0;
 		 float all = 0;
+		 int order = 0;
 		 
 		 conn=login.Login.getCon();
 		 
@@ -55,6 +56,7 @@ public class GetProfitInfo extends HttpServlet{
 		 resp.setCharacterEncoding("utf-8"); 
 
 		  type = req.getParameter("type");////key -value get方式获取url的键值对 
+		  
 		  System.out.println(type);
 	
 		 PrintWriter out=resp.getWriter();;//输出流获取
@@ -69,14 +71,20 @@ public class GetProfitInfo extends HttpServlet{
 		 
 	       try {  
 	    	   System.out.println(prevWeek0);
-	    	   String sql_for_day_pro="SELECT  SUM(total_pay) ,DATE_FORMAT(a.create_time, '%Y-%m-%d') AS time FROM  market.order a "+
+	    	   String sql_for_day_pro="SELECT  SUM(total_pay),COUNT(DISTINCT order_id),DATE_FORMAT(a.create_time, '%Y-%m-%d') AS time FROM  market.order a "+
 	    				"WHERE DATE_FORMAT(a.create_time, '%Y-%m-%d') = '"+prevWeek0+"'  GROUP BY  time ";
    		   System.out.println(sql_for_day_pro);
    	       PreparedStatement stmt5 = conn.prepareStatement(sql_for_day_pro);  
    	       
    	       r5= stmt5.executeQuery(); 
-   	       r5.next();
-   	       all=r5.getFloat(1);
+   	       if(!r5.next()) { 
+   	    	   all=0;
+   	    	  order=0;
+   	    	   }else {
+   	    		all=r5.getFloat(1);
+   	    	    order=r5.getInt(2);
+   	    	   }
+ 
 	    	   if(type.equals("week")) {
 	    		   
 	    		   LocalDate prevWeek1 = LocalDate.now().minus(1, ChronoUnit.WEEKS);
@@ -93,7 +101,7 @@ public class GetProfitInfo extends HttpServlet{
 	    	    	   ret_obj.put("status", false);
 	    	    	   ret_obj.put("message", "统计查询出错");
 	    	    	   out.print(ret_obj.toString());  
-	    		        out.flush();;
+	    		       out.flush();
 	    	       }else {
 	    	    	   LocalDate prevday = LocalDate.now();
 	    	    	   
@@ -187,6 +195,8 @@ public class GetProfitInfo extends HttpServlet{
     	   ret_obj_father.put("revenue",ret_obj_array_revenue);
     	   ret_obj_father.put("profit",ret_obj_array_profit);
     	   ret_obj_father.put("all",all);
+    	   ret_obj_father.put("orders",order);
+    	
     	
     	   
 	       ret_obj.put("status",true);

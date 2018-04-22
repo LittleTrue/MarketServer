@@ -2,6 +2,7 @@ package accountant;
 import java.io.BufferedReader;
 import java.io.IOException;  
 import java.io.PrintWriter;
+import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -31,7 +32,7 @@ public class SetActivity extends HttpServlet{
 		 long time=System.currentTimeMillis();
 		 int insertResult;//方法变量定义
 		 
-		 
+		 String name;
 		 String goodId;//输入
 		 String goodNum;
 		 String discountPrice;
@@ -53,8 +54,11 @@ public class SetActivity extends HttpServlet{
 		 goodId=get_obj.getString("goodId");
 		 goodNum=get_obj.getString("num");
 		 discountPrice=get_obj.getString("discount");
-		 
-		 
+		 name=get_obj.getString("name");
+		 System.out.println(name);
+//		 if(!name.equals("")) {
+//			 name = URLDecoder.decode(name,"UTF-8");
+//			 }
 		 JSONObject ret_obj = new JSONObject();
 		 
 	      conn=login.Login.getCon();
@@ -71,8 +75,8 @@ public class SetActivity extends HttpServlet{
 	    		  ret_obj.put("message", "添加优惠失败");
 	    	}else {
 	    	   
-	       String acountantSetActivity_insert = "INSERT INTO activity(good_id,is_bind,discount_num,good_number,create_time)"
-	 	          		+ " value("+goodId+","+0+","+discountPrice+","+goodNum+","+time+")";
+	       String acountantSetActivity_insert = "INSERT INTO activity(good_id,is_bind,discount_num,good_number,create_time,name)"
+	 	          		+ " value("+goodId+","+0+","+discountPrice+","+goodNum+","+time+",'"+name+"')";
 	       System.out.println(acountantSetActivity_insert);
 	 	   PreparedStatement stmt2 = conn.prepareStatement(acountantSetActivity_insert);     
 	 	   insertResult= stmt2.executeUpdate();

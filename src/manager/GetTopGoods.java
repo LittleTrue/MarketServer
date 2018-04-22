@@ -2,12 +2,15 @@ package manager;
 import java.io.BufferedReader;
 import java.io.IOException;  
 import java.io.PrintWriter;
+import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;  
@@ -33,6 +36,13 @@ public class GetTopGoods extends HttpServlet{
 		 int  goodId;
 		 String  goodName;
 		 int  goodNum;
+		 LocalDate prevWeek0 = LocalDate.now();
+		 String type; 
+		 String target;
+		 
+		 LocalDate prevWeek1 = LocalDate.now().minus(1, ChronoUnit.WEEKS);
+		 
+		 LocalDate prevWeek2 = LocalDate.now().minus(4, ChronoUnit.WEEKS);
 		 
 		 conn=login.Login.getCon();
 		 
@@ -41,16 +51,50 @@ public class GetTopGoods extends HttpServlet{
 		 req.setCharacterEncoding("utf-8");
 		 resp.setCharacterEncoding("utf-8"); 
 
-		
-	
-		PrintWriter out=resp.getWriter();;//输出流获取
+		 type = req.getParameter("type");////key -value get方式获取url的键值对 
+		 if(type==null) {
+			 type="all" ;
+		 }
+		 
+		 target = req.getParameter("target");
+		 if(!target.equals("")) {
+			 target = URLDecoder.decode(target,"UTF-8");
+			 }else {
+			target ="all";
+		 }
+		 PrintWriter out=resp.getWriter();;//输出流获取
 		
 		 JSONObject ret_obj = new JSONObject();
 		 JSONArray ret_obj_array_goodName = new JSONArray();
 		 JSONArray ret_obj_array_goodNum = new JSONArray();
 	       try {    
-	       String managerGetGoodsPrice_require = "select SUM(good_number) as maxGood,good_name from market.order  GROUP BY good_id ORDER BY SUM(good_number) DESC LIMIT 7"; 
-	    
+	    	   String managerGetGoodsPrice_require;
+	    	   
+	    	   if(type.equals("week")) {
+	    		   if(target.equals(null)||target==""||target.equals("all")) {  
+	    			   managerGetGoodsPrice_require = "SELECT SUM(good_number) AS maxGood,o.good_name from market.order o LEFT OUTER JOIN market.goods g ON o.good_id=g.good_id WHERE DATE_FORMAT(o.create_time, '%Y-%m-%d') BETWEEN DATE_SUB(NOW(),INTERVAL 7 day) AND  NOW()  GROUP BY o.good_id,o.good_name ORDER BY SUM(good_number) DESC LIMIT 7"; 
+	    		   }else {
+	    			   managerGetGoodsPrice_require = "SELECT SUM(good_number) AS maxGood,o.good_name from market.order o LEFT OUTER JOIN market.goods g ON o.good_id=g.good_id WHERE DATE_FORMAT(o.create_time, '%Y-%m-%d') BETWEEN DATE_SUB(NOW(),INTERVAL 7 day) AND  NOW() AND g.good_divide='"+target+"' GROUP BY o.good_id,o.good_name ORDER BY SUM(good_number) DESC LIMIT 7"; 
+	    			   
+	    		   }	    		   	    	   
+	    		   
+	    	}else if(type.equals("month")){
+	    		   if(target.equals(null)||target==""||target.equals("all")) {  
+	    			   managerGetGoodsPrice_require = "SELECT SUM(good_number) AS maxGood,o.good_name from market.order o LEFT OUTER JOIN market.goods g ON o.good_id=g.good_id WHERE DATE_FORMAT(o.create_time, '%Y-%m-%d') BETWEEN DATE_SUB(NOW(),INTERVAL 30 day) AND  NOW()  GROUP BY o.good_id,o.good_name ORDER BY SUM(good_number) DESC LIMIT 7"; 
+	    	   
+	    		   }else {
+	    			   managerGetGoodsPrice_require = "SELECT SUM(good_number) AS maxGood,o.good_name from market.order o LEFT OUTER JOIN market.goods g ON o.good_id=g.good_id WHERE DATE_FORMAT(o.create_time, '%Y-%m-%d') BETWEEN DATE_SUB(NOW(),INTERVAL 30 day) AND  NOW() AND g.good_divide='"+target+"' GROUP BY o.good_id,o.good_name ORDER BY SUM(good_number) DESC LIMIT 7"; 
+	    			   
+	    		   }	  
+	    		   }else {
+	    			   if(target.equals(null)||target==""||target.equals("all")) {  
+	    		   managerGetGoodsPrice_require = "select SUM(good_number) as maxGood,good_name from market.order  GROUP BY good_id ORDER BY SUM(good_number) DESC LIMIT 7";   
+	    			   }else {
+		    			   managerGetGoodsPrice_require = "SELECT SUM(good_number) AS maxGood,o.good_name from market.order o LEFT OUTER JOIN market.goods g ON o.good_id=g.good_id WHERE g.good_divide='"+target+"' GROUP BY o.good_id,o.good_name ORDER BY SUM(good_number) DESC LIMIT 7"; 
+		    			   
+		    		   }	 
+	    			   }
+	    	   System.out.println(managerGetGoodsPrice_require);
 	       PreparedStatement stmt = conn.prepareStatement(managerGetGoodsPrice_require);     
 	       r= stmt.executeQuery(); 
 

@@ -81,6 +81,7 @@ public class SetGoodPrice extends HttpServlet{
    	       		
    	   			}else {
    	   			ret_obj.put("status",true);
+   	   		    ret_obj.put("price",price);
    	   			}
    			}
 	       }catch (SQLException e) {  	

@@ -58,7 +58,7 @@ id="WebApp_ID" version="3.0">
   </servlet> 
   <servlet-mapping>  
    <servlet-name>frontAddGoods</servlet-name>  
-   <url-pattern>/front/cart/in</url-pattern> 
+   <url-pattern>/front/cart/update</url-pattern> 
    </servlet-mapping> 
    
     <servlet>  
@@ -440,6 +440,15 @@ id="WebApp_ID" version="3.0">
   <servlet-mapping>  
    <servlet-name>managerGetTopGoods</servlet-name>  
    <url-pattern>/admin/statistics/good</url-pattern> 
+   </servlet-mapping>
+   
+   <servlet>  
+      <servlet-name>stockAddGoodsType</servlet-name>  
+      <servlet-class>stock.AddGoodsType</servlet-class> 
+  </servlet> 
+  <servlet-mapping>  
+   <servlet-name>stockAddGoodsType</servlet-name>  
+   <url-pattern>/good/addType</url-pattern> 
    </servlet-mapping>
    
 </web-app> 
