@@ -22,43 +22,69 @@ import net.sf.json.JSONObject;
 import net.sf.json.JSONString;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONException;
-public class GetGoodsType extends HttpServlet {
+
+public class GetInStockList extends HttpServlet{
 	private static Connection conn = null;
 	private ResultSet r;
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException { 
-		 //方法变量定义
+	
+	 protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException { 
+	     int total;//方法变量定义
+	     int depage[]= {0,1};
 
-		 int total;//输出
+		 int page;//输入
+		 int size;
+		 String type;
+		 String stockGetPurchaseList_require="";
 		 
 		 conn=login.Login.getCon();
 		 
-		 System.out.println("stock3被访问了");
+		 System.out.println("stock被访问了");
 		 
 		 req.setCharacterEncoding("utf-8");
 		 resp.setCharacterEncoding("utf-8"); 
-
-		PrintWriter out=resp.getWriter();;//输出流获取
+	
+		 page = Integer.parseInt(req.getParameter("page"));////key -value get方式获取url的键值对 
+		 size = Integer.parseInt(req.getParameter("size"));
+		
+		  
+		  depage=login.Login.getSplitPageInfo(page,size);
+		  
+		 PrintWriter out=resp.getWriter();//输出流获取
 		
 		 JSONObject ret_obj = new JSONObject();
 		 JSONArray ret_obj_array = new JSONArray();
- 
-	       try {    
-	       String stockGetGoodsType_require = "select distinct good_divide from goods";
-	          		
-	       PreparedStatement stmt = conn.prepareStatement(stockGetGoodsType_require);     
+		 String stockGetPurchaseList_require_count="";
+		 
+		 try { 
+			
+			stockGetPurchaseList_require ="select distinct stock_id,stock_time,worker_name from stock a JOIN worker b ON a.worker_id=b.worker_id"
+				       +" ORDER BY stock_time DESC"+" LIMIT "+depage[0]+","+depage[1];
+			
+			 stockGetPurchaseList_require_count="select count(distinct stock_id) from stock"
+				       +" ORDER BY stock_time DESC";
+			 		
+			 
+			 
+	       System.out.println(stockGetPurchaseList_require);
+	       
+	       PreparedStatement stmt = conn.prepareStatement(stockGetPurchaseList_require_count);   
+	       
 	       r= stmt.executeQuery(); 
-   
+	       r.next();
+	       total=r.getInt(1);
+      	 
+	       stmt = conn.prepareStatement(stockGetPurchaseList_require);
+	       r = stmt.executeQuery();
+      	 
 	       ret_obj_array =login.Login.resultSetToJsonArry(r);
        	
 	       r.beforeFirst();// 返回第一个（记住不是rs.frist()）,不写的话下面的循环里面没值 
 	       
 	       if (!r.next()) {  	  
 	    	   ret_obj.put("status",true);
-       		ret_obj.put("info","");
-       		ret_obj.put("total",0);
+       			ret_obj.put("info","");
+       			ret_obj.put("total",0);
 	    	}else {
-	    		r.last();// 移动到最后  	    		
-	    		total=r.getRow();// 获得结果集长度  
 	    		
         		ret_obj.put("status",true);
         		ret_obj.put("info",ret_obj_array);
@@ -68,7 +94,7 @@ public class GetGoodsType extends HttpServlet {
 	       stmt.close();
 	       }catch (SQLException e) {  	
 	        	  e.printStackTrace();
- 
+  
 	          } finally { 
 	               try {
 	                   conn.close(); 
@@ -81,8 +107,10 @@ public class GetGoodsType extends HttpServlet {
 	        out.flush();  
 	       
 	    }  
+	 
 	 @Override  
 	    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {  
 	        this.doGet(req, resp);  
 	    }  
+
 }

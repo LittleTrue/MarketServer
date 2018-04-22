@@ -22,49 +22,56 @@ import net.sf.json.JSONObject;
 import net.sf.json.JSONString;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONException;
-public class GetGoodsType extends HttpServlet {
+
+public class GetInStockDetail  extends HttpServlet{
 	private static Connection conn = null;
 	private ResultSet r;
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException { 
-		 //方法变量定义
+	private HashMap<String,String> workerInfo;
 
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException { 
+		//方法变量定义
+		 
+		 String stockId;//输入
+		 
 		 int total;//输出
 		 
 		 conn=login.Login.getCon();
 		 
-		 System.out.println("stock3被访问了");
+		 System.out.println("manager被访问了");
 		 
 		 req.setCharacterEncoding("utf-8");
 		 resp.setCharacterEncoding("utf-8"); 
 
-		PrintWriter out=resp.getWriter();;//输出流获取
+		 stockId = req.getParameter("stock_id");////key -value get方式获取url的键值对 
+		  
+		PrintWriter out=resp.getWriter();//输出流获取
 		
 		 JSONObject ret_obj = new JSONObject();
+		 
 		 JSONArray ret_obj_array = new JSONArray();
- 
+		 
 	       try {    
-	       String stockGetGoodsType_require = "select distinct good_divide from goods";
-	          		
-	       PreparedStatement stmt = conn.prepareStatement(stockGetGoodsType_require);     
+	       String stockGetPurchaseListDetail_require = "select stock_id,a.good_id,instock_number as good_number,instock_price as cost,good_name,good_attr FROM market.stock a JOIN goods b ON a.good_id=b.good_id"
+	          +" where stock_id = "+stockId;
+	       System.out.println(stockGetPurchaseListDetail_require);
+	       PreparedStatement stmt = conn.prepareStatement(stockGetPurchaseListDetail_require);     
 	       r= stmt.executeQuery(); 
-   
 	       ret_obj_array =login.Login.resultSetToJsonArry(r);
        	
-	       r.beforeFirst();// 返回第一个（记住不是rs.frist()）,不写的话下面的循环里面没值 
-	       
-	       if (!r.next()) {  	  
-	    	   ret_obj.put("status",true);
-       		ret_obj.put("info","");
-       		ret_obj.put("total",0);
-	    	}else {
-	    		r.last();// 移动到最后  	    		
-	    		total=r.getRow();// 获得结果集长度  
+       	r.beforeFirst();// 返回第一个（记住不是rs.frist()）,不写的话下面的循环里面没值  
+       	
+       	if(!r.next()) {
+       		ret_obj.put("status",false);
+       		ret_obj.put("message","无stockId或当前id没有入库信息");
+       	}
+       	else {
+       		r.last();// 移动到最后  	    		
+	    	total=r.getRow();// 获得结果集长度  
 	    		
-        		ret_obj.put("status",true);
-        		ret_obj.put("info",ret_obj_array);
-        		ret_obj.put("total",total);
-	          }
-	       
+       		ret_obj.put("status",true);
+       		ret_obj.put("info",ret_obj_array);
+       		ret_obj.put("total",total);
+       	}
 	       stmt.close();
 	       }catch (SQLException e) {  	
 	        	  e.printStackTrace();
@@ -81,8 +88,10 @@ public class GetGoodsType extends HttpServlet {
 	        out.flush();  
 	       
 	    }  
+	 
 	 @Override  
 	    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {  
 	        this.doGet(req, resp);  
 	    }  
+
 }

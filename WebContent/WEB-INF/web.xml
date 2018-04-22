@@ -451,6 +451,24 @@ id="WebApp_ID" version="3.0">
    <url-pattern>/good/addType</url-pattern> 
    </servlet-mapping>
    
+   <servlet>  
+      <servlet-name>stockGetInStockList</servlet-name>  
+      <servlet-class>stock.GetInStockList</servlet-class> 
+  </servlet> 
+  <servlet-mapping>  
+   <servlet-name>stockGetInStockList</servlet-name>  
+   <url-pattern>/good/inStock/list</url-pattern> 
+   </servlet-mapping>
+   
+   <servlet>  
+      <servlet-name>stockGetInStockDetail</servlet-name>  
+      <servlet-class>stock.GetInStockDetail</servlet-class> 
+  </servlet> 
+  <servlet-mapping>  
+   <servlet-name>stockGetInStockDetail</servlet-name>  
+   <url-pattern>/good/inStock/detail</url-pattern> 
+   </servlet-mapping>
+   
 </web-app> 
  
   

@@ -94,6 +94,8 @@ public class GetTopGoods extends HttpServlet{
 		    			   
 		    		   }	 
 	    			   }
+	    	   
+	    	   
 	    	   System.out.println(managerGetGoodsPrice_require);
 	       PreparedStatement stmt = conn.prepareStatement(managerGetGoodsPrice_require);     
 	       r= stmt.executeQuery(); 
